@@ -25,7 +25,9 @@ namespace Player
             if (Input.touchCount == 0) return;
 
             var touch = Input.GetTouch(0);
-            if (touch.position.y > _maxY) return;
+            
+            var touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+            if (touchPosition.y > _maxY) return;
             
             MoveToPosition(touch.position.x);
         }
