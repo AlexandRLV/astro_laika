@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream:Assets/2D/Planets/2k_uranus.jpg.meta
 guid: a932e15658bf8ec4c9cdbf0542756efb
+=======
+guid: ccbae9fb1d6d9914c94c45977792c5c2
+>>>>>>> Stashed changes:Assets/2D/SpaceShip/texture.png.meta
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
