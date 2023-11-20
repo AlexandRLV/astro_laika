@@ -12,7 +12,7 @@ namespace Environment
         private void Start()
         {
             var renderer = GetComponent<Renderer>();
-            renderer.material.SetTexture("_MainTex", _bank.planets.GetRandom());
+            renderer.material.SetTexture("_BaseMap", _bank.planets.GetRandom());
         }
     }
 }

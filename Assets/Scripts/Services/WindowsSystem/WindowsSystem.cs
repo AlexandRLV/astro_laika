@@ -9,21 +9,34 @@ namespace Services.WindowsSystem
     {
         private GameWindows _gameWindows;
         private UiRoot _uiRoot;
-        
+
         private Dictionary<Type, WindowBase> _windowsPrefabs;
         private Dictionary<Type, WindowBase> _loadedWindows;
-        
+
         public void Initialize(GameWindows gameWindows, UiRoot uiRoot)
         {
             _gameWindows = gameWindows;
             _uiRoot = uiRoot;
             _windowsPrefabs = new Dictionary<Type, WindowBase>();
             _loadedWindows = new Dictionary<Type, WindowBase>();
-            
+
+            if (gameWindows.Windows == null)
+                return;
+
             foreach (var window in _gameWindows.Windows)
             {
                 _windowsPrefabs.Add(window.GetType(), window);
             }
+        }
+
+        public void AddWindow<T>(T window) where T : WindowBase
+        {
+            var type = typeof(T);
+            if (_loadedWindows.ContainsKey(type))
+                throw new ArgumentException(
+                    $"Trying to add window of type {type.Name}, but this window already created!");
+            
+            _loadedWindows.Add(type, window);
         }
 
         public bool TryGetWindow<T>(out T window) where T : WindowBase
