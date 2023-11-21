@@ -25,8 +25,12 @@ namespace DI
             _registrations.Add(type, value);
         }
 
+        // Methods for direct usage
         public T Resolve<T>() => _registrations.TryGetValue(typeof(T), out object value) ? (T)value : default;
-
         public bool CanResolve<T>() => _registrations.ContainsKey(typeof(T));
+
+        // Methods for automatic injection
+        public object Resolve(Type type) => _registrations.GetValueOrDefault(type);
+        public bool CanResolve(Type type) => _registrations.ContainsKey(type);
     }
 }
