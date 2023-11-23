@@ -9877,12 +9877,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93dcd31a1ad3ab441b45e81d4876491f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damagePerSecond: 10
   firePoint: {fileID: 8137401146663401051}
-  offset: {x: 0, y: 0, z: -0.1}
-  reloadTime: 0
-  useTime: 2
+  reloadTime: 2
+  useTime: 1
   lineRenderer: {fileID: 3340805429177967044}
   impactEffect: {fileID: 3758745499343403471}
+  impactEffectOffset: {x: 0, y: 0, z: 0}
   lightEffect: {fileID: 4467440421051475157}
 --- !u!1 &8706828544479153811
 GameObject:

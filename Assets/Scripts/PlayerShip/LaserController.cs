@@ -6,13 +6,14 @@ namespace Player
 {
     public class LaserController : MonoBehaviour
     {
+        [SerializeField] float damagePerSecond;
         [SerializeField] Transform firePoint;
-        [SerializeField] Vector3 offset;
         [SerializeField] float reloadTime;
         [SerializeField] float useTime;
 
         [SerializeField] LineRenderer lineRenderer;
         [SerializeField] ParticleSystem impactEffect;
+        [SerializeField] Vector3 impactEffectOffset;
         [SerializeField] Light lightEffect;
 
         bool isReloading;
@@ -20,7 +21,8 @@ namespace Player
         bool usingLaser;
         bool powerMode;
 
-        Vector3 target;
+        GameObject targetObject;
+        Vector3 targetPoint;
         RaycastHit hit;
 
         private void Update()
@@ -28,9 +30,14 @@ namespace Player
             if (Physics.Raycast(firePoint.position, transform.forward, out hit, 100))
             {
                 seeTarget = true;
-                target = hit.point;
+                targetPoint = hit.point;
+                targetObject = hit.collider.gameObject;
             }
-            else seeTarget = false;
+            else
+            {
+                seeTarget = false;
+                targetObject = null;
+            }
 
             if (powerMode) return;
 
@@ -40,6 +47,7 @@ namespace Player
                 StartCoroutine(LaserReload(reloadTime));
             }
 
+            ApplyDamage();
             LaserVisualControl();
         }
 
@@ -57,6 +65,17 @@ namespace Player
             isReloading = false;
         }
 
+        private void ApplyDamage()
+        {
+            if (usingLaser && targetObject != null)
+            {
+                Damageable damageable = targetObject.GetComponentInParent<Damageable>();
+
+                if (damageable) damageable.GetDamage(damagePerSecond * Time.deltaTime);
+
+            }
+        }
+
         private void LaserVisualControl()
         {
             if (usingLaser && seeTarget)
@@ -65,10 +84,10 @@ namespace Player
                 impactEffect.Play();
                 lightEffect.enabled = true;
 
-                Vector3[] direction = { firePoint.position, target };
+                Vector3[] direction = { firePoint.position, targetPoint };
                 lineRenderer.SetPositions(direction);
 
-                impactEffect.transform.position = hit.point - offset;
+                impactEffect.transform.position = hit.point - impactEffectOffset;
                 impactEffect.transform.rotation = Quaternion.LookRotation(firePoint.position);
             }
             else
