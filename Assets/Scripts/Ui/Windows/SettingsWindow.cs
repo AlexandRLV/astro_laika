@@ -26,7 +26,6 @@ namespace Ui.Windows
         [SerializeField] private Button _saveButton;
         [SerializeField] private Button _cancelButton;
 
-        [Inject] private WindowsSystem _windowsSystem;
         [Inject] private GameSettingsManager _gameSettingsManager;
         
         private void Start()
@@ -49,16 +48,12 @@ namespace Ui.Windows
             _saveButton.onClick.AddListener(() =>
             {
                 _gameSettingsManager.SaveSettings();
-                _windowsSystem.DestroyWindow(this);
-                _windowsSystem.TryGetWindow(out MainMenuWindow mainMenu);
-                mainMenu.gameObject.SetActive(true);
+                windowsSystem.DestroyWindow(this);
             });
             
             _cancelButton.onClick.AddListener(() =>
             {
-                _windowsSystem.DestroyWindow(this);
-                _windowsSystem.TryGetWindow(out MainMenuWindow mainMenu);
-                mainMenu.gameObject.SetActive(true);
+                windowsSystem.DestroyWindow(this);
             });
             
             _musicToggleButton.onClick.AddListener(ToggleMusic);

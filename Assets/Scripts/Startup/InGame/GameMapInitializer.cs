@@ -1,5 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
-using UnityEngine;
+using DI;
+using Services.WindowsSystem;
+using Ui.Windows;
 using UnityEngine.SceneManagement;
 
 namespace Startup.InGame
@@ -10,9 +12,10 @@ namespace Startup.InGame
         
         public override async UniTask Initialize()
         {
-            Debug.Log($"Loading scene {SceneToLoad}");
             await SceneManager.LoadSceneAsync(SceneToLoad, LoadSceneMode.Additive);
-            Debug.Log("Loaded scene!");
+
+            var windowsSystem = GameContainer.Common.Resolve<WindowsSystem>();
+            windowsSystem.CreateWindow<InGameUI>();
         }
 
         public override async UniTask Dispose()

@@ -16,15 +16,13 @@ namespace Ui.Windows
         [SerializeField] private Button _exitButton;
 
         [Inject] private GameInitializer _gameInitializer;
-        [Inject] private WindowsSystem _windowsSystem;
         
         private void Start()
         {
             _playButton.onClick.AddListener(Play);
             _settingsButton.onClick.AddListener(() =>
             {
-                _windowsSystem.CreateWindow<SettingsWindow>();
-                gameObject.SetActive(false);
+                windowsSystem.CreateWindow<SettingsWindow>();
             });
             _exitButton.onClick.AddListener(() => Application.Quit());
         }
