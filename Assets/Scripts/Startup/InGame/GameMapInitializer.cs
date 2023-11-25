@@ -20,6 +20,9 @@ namespace Startup.InGame
 
         public override async UniTask Dispose()
         {
+            var windowsSystem = GameContainer.Common.Resolve<WindowsSystem>();
+            windowsSystem.DestroyWindow<InGameUI>();
+            
             await SceneManager.UnloadSceneAsync(SceneToLoad);
         }
     }

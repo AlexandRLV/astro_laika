@@ -29,6 +29,14 @@ namespace LevelObjects
                 SpawnRandomObject(_firstObjectYOffset);
         }
 
+        private void OnDestroy()
+        {
+            foreach (var spawnedObject in _spawnedObjects)
+            {
+                Destroy(spawnedObject);
+            }
+        }
+
         private void Update()
         {
             UpdateSpawnedObjects();

@@ -28,6 +28,8 @@ namespace Ui.Windows
         {
             Time.timeScale = 1f;
             windowsSystem.DestroyWindow(this);
+            windowsSystem.TryGetWindow(out InGameUI inGameUI);
+            inGameUI.gameObject.SetActive(true);
         }
 
         private void OpenSettings()
