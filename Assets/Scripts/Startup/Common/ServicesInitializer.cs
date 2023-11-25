@@ -1,6 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
 using DI;
+using GameSettings;
 using Services;
+using Services.SoundsSystem;
+using UnityEngine;
 
 namespace Startup.Common
 {
@@ -10,6 +13,13 @@ namespace Startup.Common
         {
             var messageBroker = new MessageBroker();
             GameContainer.Common.Register(messageBroker);
+
+            var gameSettings = new GameSettingsManager();
+            GameContainer.Common.Register(gameSettings);
+
+            var soundsSystemPrefab = Resources.Load<SoundsSystem>("Services/SoundsSystem");
+            var soundsSystem = GameContainer.InstantiateAndResolve(soundsSystemPrefab);
+            GameContainer.Common.Register(soundsSystem);
             
             return UniTask.CompletedTask;
         }

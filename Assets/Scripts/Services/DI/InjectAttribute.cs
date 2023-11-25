@@ -2,9 +2,8 @@
 
 namespace DI
 {
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Constructor | AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Field)]
     public class InjectAttribute : Attribute
     {
-        
     }
 }

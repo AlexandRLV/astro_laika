@@ -12,20 +12,62 @@ namespace DI
         public static Container Common;
         public static Container InGame;
 
+        public static void InjectToInstance<T>(T instance) where T : class
+        {
+            var type = typeof(T);
+            
+            InjectFields(instance, type);
+            InjectMethods(type, instance);
+        }
+        
+        // Method for creating instance of common C# class
+        public static T Create<T>()
+        {
+            var type = typeof(T);
+            var constructors = type.GetConstructors()
+                .Where(x => x.IsDefined(typeof(ConstructAttribute)));
+
+            var constructor = constructors.FirstOrDefault();
+            if (constructor == null)
+                return Activator.CreateInstance<T>();
+
+            var parameters = constructor.GetParameters();
+            object[] parametersValues = ArrayPool<object>.New(parameters.Length);
+            
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                var parameterType = parameters[i].ParameterType;
+                if (!TryResolve(parameterType, out object value))
+                    throw new ArgumentException(
+                        $"Cannot create instance of {type.Name}: its first [Inject] constructor has unknown dependency: {parameterType.Name}");
+
+                parametersValues[i] = value;
+            }
+
+            object instance = constructor.Invoke(parametersValues);
+            InjectToInstance(instance);
+            return (T)instance;
+        }
+        
+        // Method for instantiating prefab and passing all [Inject] fields and methods in it
         public static T InstantiateAndResolve<T>(T prefab) where T : MonoBehaviour
         {
             var spawnedObject = Object.Instantiate(prefab);
-            var type = typeof(T);
-            
-            InjectFields(spawnedObject, type);
-            InjectMethods(type, spawnedObject);
-
+            InjectToInstance(spawnedObject);
+            return spawnedObject;
+        }
+        
+        // Method for instantiating prefab as child and passing all [Inject] fields and methods in it
+        public static T InstantiateAndResolve<T>(T prefab, Transform parent) where T : MonoBehaviour
+        {
+            var spawnedObject = Object.Instantiate(prefab, parent);
+            InjectToInstance(spawnedObject);
             return spawnedObject;
         }
 
         private static void InjectFields(object spawnedObject, Type type)
         {
-            var fields = type.GetFields(BindingFlags.NonPublic)
+            var fields = type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
                 .Where(x => x.IsDefined(typeof(InjectAttribute)));
             
             foreach (var field in fields)
@@ -43,7 +85,9 @@ namespace DI
 
         private static void InjectMethods(Type type, object spawnedObject)
         {
-            var methods = type.GetMethods(BindingFlags.NonPublic);
+            var methods = type.GetMethods(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+                .Where(x => x.IsDefined(typeof(ConstructAttribute)));
+            
             foreach (var method in methods)
             {
                 var parameters = method.GetParameters();
@@ -86,6 +130,6 @@ namespace DI
 
             value = null;
             return false;
-        } 
+        }
     }
 }

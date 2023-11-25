@@ -15,8 +15,9 @@ namespace Startup.Common
             GameContainer.Common.Register(uiRoot);
 
             var gameWindows = Resources.Load<GameWindows>("Configs/Game Windows");
-            var windowsSystem = new WindowsSystem();
-            windowsSystem.Initialize(gameWindows, uiRoot);
+            GameContainer.Common.Register(gameWindows);
+            
+            var windowsSystem = GameContainer.Create<WindowsSystem>();
             GameContainer.Common.Register(windowsSystem);
             
             var loadingScreen = Object.FindObjectOfType<LoadingScreen>(true);
@@ -24,6 +25,7 @@ namespace Startup.Common
             GameContainer.Common.Register(loadingScreen);
 
             var mainMenu = Object.FindObjectOfType<MainMenuWindow>();
+            GameContainer.InjectToInstance(mainMenu);
             windowsSystem.AddWindow(mainMenu);
             
             return UniTask.CompletedTask;

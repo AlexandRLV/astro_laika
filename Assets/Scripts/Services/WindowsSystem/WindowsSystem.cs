@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DI;
 using Ui;
 using Object = UnityEngine.Object;
 
@@ -13,7 +14,8 @@ namespace Services.WindowsSystem
         private Dictionary<Type, WindowBase> _windowsPrefabs;
         private Dictionary<Type, WindowBase> _loadedWindows;
 
-        public void Initialize(GameWindows gameWindows, UiRoot uiRoot)
+        [Construct]
+        public WindowsSystem(GameWindows gameWindows, UiRoot uiRoot)
         {
             _gameWindows = gameWindows;
             _uiRoot = uiRoot;
@@ -72,12 +74,24 @@ namespace Services.WindowsSystem
             if (windowPrefabBase is not T windowPrefab)
                 throw new ArgumentException($"Error in getting window type {type.Name} - registered wrong window");
             
-            var window = Object.Instantiate(windowPrefab, _uiRoot.WindowsParent);
+            var window = GameContainer.InstantiateAndResolve(windowPrefab, _uiRoot.WindowsParent);
             _loadedWindows.Add(type, window);
             return window;
         }
 
         public void DestroyWindow<T>() where T : WindowBase
+        {
+            var type = typeof(T);
+            if (!_loadedWindows.TryGetValue(type, out var window))
+                return;
+            
+            if (window != null && window.gameObject != null)
+                Object.Destroy(window.gameObject);
+
+            _loadedWindows.Remove(type);
+        }
+
+        public void DestroyWindow<T>(T windowObject) where T : WindowBase
         {
             var type = typeof(T);
             if (!_loadedWindows.TryGetValue(type, out var window))

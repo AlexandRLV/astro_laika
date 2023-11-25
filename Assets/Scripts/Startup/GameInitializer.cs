@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using DI;
+using Services.SoundsSystem;
 using Services.WindowsSystem;
 using Startup.Common;
 using Startup.InGame;
@@ -20,6 +21,9 @@ namespace Startup
         {
             new GameMapInitializer(),
         };
+
+        [Inject] private SoundsSystem _soundsSystem;
+        [Inject] private WindowsSystem _windowsSystem;
         
         private void Awake()
         {
@@ -33,6 +37,8 @@ namespace Startup
             {
                 await initializer.Initialize();
             }
+            
+            _soundsSystem.PlayMusic(MusicType.InGame);
         }
 
         public async UniTask BackToMenu()
@@ -42,9 +48,9 @@ namespace Startup
                 await initializer.Dispose();
             }
             GameContainer.InGame = null;
-
-            var windowsSystem = GameContainer.Common.Resolve<WindowsSystem>();
-            windowsSystem.TryGetWindow<MainMenuWindow>(out var mainMenu);
+            
+            _soundsSystem.PlayMusic(MusicType.MainMenu);
+            _windowsSystem.TryGetWindow<MainMenuWindow>(out var mainMenu);
             mainMenu.gameObject.SetActive(true);
         }
 
@@ -56,6 +62,9 @@ namespace Startup
             {
                 await initializer.Initialize();
             }
+            
+            GameContainer.InjectToInstance(this);
+            _soundsSystem.PlayMusic(MusicType.MainMenu);
         }
     }
 }

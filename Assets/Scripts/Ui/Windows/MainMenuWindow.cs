@@ -12,11 +12,20 @@ namespace Ui.Windows
     {
         [SerializeField] private MainMenuShipPreview _preview;
         [SerializeField] private Button _playButton;
+        [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _exitButton;
 
-        private void Awake()
+        [Inject] private GameInitializer _gameInitializer;
+        [Inject] private WindowsSystem _windowsSystem;
+        
+        private void Start()
         {
             _playButton.onClick.AddListener(Play);
+            _settingsButton.onClick.AddListener(() =>
+            {
+                _windowsSystem.CreateWindow<SettingsWindow>();
+                gameObject.SetActive(false);
+            });
             _exitButton.onClick.AddListener(() => Application.Quit());
         }
 
@@ -32,7 +41,7 @@ namespace Ui.Windows
             {
                 _preview.gameObject.SetActive(false);
                 gameObject.SetActive(false);
-                GameContainer.Common.Resolve<GameInitializer>().StartGame().Forget();
+                _gameInitializer.StartGame().Forget();
             });
         }
     }
