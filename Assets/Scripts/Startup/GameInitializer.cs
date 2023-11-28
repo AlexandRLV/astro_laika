@@ -20,6 +20,8 @@ namespace Startup
         private readonly InitializerBase[] _inGameInitializers =
         {
             new GameMapInitializer(),
+            new PlayerInitializer(),
+            new EnemiesInitializer(),
         };
 
         [Inject] private SoundsSystem _soundsSystem;

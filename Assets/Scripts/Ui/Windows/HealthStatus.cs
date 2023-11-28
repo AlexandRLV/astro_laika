@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 public class HealthStatus : MonoBehaviour
 {
-    [SerializeField] GameObject _shieldVisuals;
+    [SerializeField] private GameObject _shieldVisuals;
 
-    [SerializeField] Image _healthBar;
-    [SerializeField] Image _shieldBar;
+    [SerializeField] private Image _healthBar;
+    [SerializeField] private Image _shieldBar;
 
     // for health
     public void HealthBarChange(float currentHealth, float maxHealth)

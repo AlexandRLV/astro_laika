@@ -1,27 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMoveController : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
-    [SerializeField] float pointOffset;
-    [SerializeField] bool isStatic = false;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float pointOffset;
+    [SerializeField] private bool isStatic = false;
 
-    [SerializeField] Vector3 movePoint;
-    [SerializeField] bool drawGizmos;
+    [SerializeField] private Vector3 movePoint;
+    [SerializeField] private bool drawGizmos;
 
-    [SerializeField] Vector3 moveZoneCenter, moveZoneSize;
-    EnemyShipsWaveManager waveManager;
+    [SerializeField] private Vector3 _moveZoneCenter;
+    [SerializeField] private Vector3 _moveZoneSize;
+
+    [SerializeField] private HealthStatus _healthStatus;
+    [SerializeField] private Damageable _enemyDamageable;
+    
+    private EnemyShipsWaveManager _waveManager;
 
     public void Init( Vector3 moveZoneCenter, Vector3 moveZoneSize, EnemyShipsWaveManager waveManager)
     {
-        this.moveZoneCenter = moveZoneCenter;
-        this.moveZoneSize = moveZoneSize;
-        this.waveManager = waveManager;
+        _moveZoneCenter = moveZoneCenter;
+        _moveZoneSize = moveZoneSize;
+        _waveManager = waveManager;
+        
+        _enemyDamageable.SetStatusCanvas(_healthStatus);
+        _enemyDamageable.OnDestroyed += OnDestroyed;
 
-        movePoint = EnemyExtentions.CalculateNewMovePoint(
-            this.moveZoneCenter, this.moveZoneSize);
+        movePoint = EnemyExtentions.CalculateNewMovePoint(_moveZoneCenter, _moveZoneSize);
     }
 
     private void Update()
@@ -38,8 +43,19 @@ public class EnemyMoveController : MonoBehaviour
         else
         {
             movePoint = EnemyExtentions.CalculateNewMovePoint(
-                moveZoneCenter, moveZoneSize);
+                _moveZoneCenter, _moveZoneSize);
         }
+    }
+
+    private void OnDestroyed()
+    {
+        _waveManager.EnemyDestroyed(gameObject);
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        _enemyDamageable.OnDestroyed -= OnDestroyed;
     }
 
 #if UNITY_EDITOR
@@ -51,13 +67,7 @@ public class EnemyMoveController : MonoBehaviour
         Gizmos.DrawSphere(movePoint, 0.05f);
 
         Gizmos.color = new Color(0.8f, 0f, 0f, 0.3f);
-        Gizmos.DrawCube(moveZoneCenter, moveZoneSize);
+        Gizmos.DrawCube(_moveZoneCenter, _moveZoneSize);
     }
 #endif
-
-    private void OnDestroy()
-    {
-        waveManager.ReduceAliveEnemies();
-    }
-
 }

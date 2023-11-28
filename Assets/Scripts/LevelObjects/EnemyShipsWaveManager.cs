@@ -5,41 +5,43 @@ using UnityEngine;
 
 public class EnemyShipsWaveManager : MonoBehaviour
 {
-    [SerializeField] Transform[] spawnPoints;
-    [SerializeField, Range(1, 10)] float enemyMoveZoneWidth, enemyMoveZoneHeight;
-    [SerializeField] Vector3 enemyMoveZoneOffset;
+    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField, Range(1, 10)] private float enemyMoveZoneWidth, enemyMoveZoneHeight;
+    [SerializeField] private Vector3 enemyMoveZoneOffset;
 
-    [SerializeField] float startDelay;
-    [SerializeField] float timeBetweenWaves;
-    [SerializeField] bool waitForLastEnemy;
+    [SerializeField] private float startDelay;
+    [SerializeField] private float timeBetweenWaves;
+    [SerializeField] private bool waitForLastEnemy;
 
-    [SerializeField] float countdownToNewWave = 0;
-    [SerializeField] int waveIndex = 0;
-    [SerializeField] int enemiesAlive;
-    public static EnemyShipsWaveManager instance;
+    [SerializeField] private float countdownToNewWave = 0;
+    [SerializeField] private int waveIndex = 0;
+    [SerializeField] private int enemiesAlive;
 
-    [SerializeField] Wave[] allWaves;
+    [SerializeField] private Wave[] allWaves;
+    
+    private Vector3 EnemyMoveZoneCenter => transform.position + enemyMoveZoneOffset;
+    private Vector3 EnemyMoveZoneSize => new(enemyMoveZoneWidth, enemyMoveZoneHeight, 0f);
 
-    public Vector3 EnemyMoveZoneCenter => transform.position + enemyMoveZoneOffset;
-    public Vector3 EnemyMoveZoneSize => new Vector3(enemyMoveZoneWidth, enemyMoveZoneHeight, 0f);
-
+    private List<GameObject> _spawnedEnemies;
+    
     public Vector3 MovingZoneSize(Vector3 center, float sizeX, float sizeY)
     {
         Vector3 zero = Vector3.zero;
         return zero;
     }
 
+    public void EnemyDestroyed(GameObject enemy) => _spawnedEnemies.Remove(enemy);
+
     private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(instance);
-
+        _spawnedEnemies = new List<GameObject>();
         countdownToNewWave = startDelay;
     }
 
     private void Update()
     {
-        if (waitForLastEnemy && enemiesAlive > 0) return;
+        if (waitForLastEnemy && enemiesAlive > 0)
+            return;
 
         if (countdownToNewWave <= 0 && waveIndex < allWaves.Length)
         {
@@ -55,30 +57,15 @@ public class EnemyShipsWaveManager : MonoBehaviour
         countdownToNewWave = Mathf.Clamp(countdownToNewWave, 0, timeBetweenWaves);
     }
 
-#if UNITY_EDITOR
-    private void OnValidate()
+    private void OnDestroy()
     {
-        if (allWaves.Length < 0) return;
-        for (int i = 0; i < allWaves.Length; i++)
+        StopAllCoroutines();
+        foreach (var spawnedEnemy in _spawnedEnemies)
         {
-            if (allWaves[i].enemies.Count > allWaves[i].countOfEnemy.Count)
-            {
-                allWaves[i].countOfEnemy.Add(allWaves[i].enemies.Count - allWaves[i].countOfEnemy.Count);
-            }
-            else if (allWaves[i].enemies.Count < allWaves[i].countOfEnemy.Count)
-            {
-                allWaves[i].countOfEnemy.Remove(allWaves[i].countOfEnemy.Count - allWaves[i].enemies.Count);
-            }
-            allWaves[i].totalEnemiesInWave = allWaves[i].countOfEnemy.Sum();
+            Destroy(spawnedEnemy.gameObject);
         }
+        _spawnedEnemies.Clear();
     }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = new Color(0.8f, 0f, 0f, 0.4f);
-        Gizmos.DrawCube(EnemyMoveZoneCenter, EnemyMoveZoneSize);
-    }
-#endif
 
     private void SpawnEnemy(GameObject enemy)
     {
@@ -86,6 +73,7 @@ public class EnemyShipsWaveManager : MonoBehaviour
         enemiesAlive++;
         GameObject newEnemy = Instantiate(enemy, spawnPoints[i].position, enemy.transform.rotation);
         newEnemy.GetComponent<EnemyMoveController>().Init(EnemyMoveZoneCenter, EnemyMoveZoneSize, this);
+        _spawnedEnemies.Add(newEnemy);
     }
 
     private IEnumerator SpawnWave(int waveIndex)
@@ -103,17 +91,28 @@ public class EnemyShipsWaveManager : MonoBehaviour
         }
         this.waveIndex++;
     }
+    
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (allWaves == null)
+            return;
+        
+        foreach (var wave in allWaves)
+        {
+            if (wave.enemies.Count > wave.countOfEnemy.Count)
+                wave.countOfEnemy.Add(wave.enemies.Count - wave.countOfEnemy.Count);
+            else if (wave.enemies.Count < wave.countOfEnemy.Count)
+                wave.countOfEnemy.Remove(wave.countOfEnemy.Count - wave.enemies.Count);
+            
+            wave.totalEnemiesInWave = wave.countOfEnemy.Sum();
+        }
+    }
 
-    private void StopSpawn() => StopAllCoroutines();
-    public void ReduceAliveEnemies() => enemiesAlive--;
-
-}
-
-[System.Serializable]
-public class Wave
-{
-    public List<GameObject> enemies;
-    public List<int> countOfEnemy;
-    public float timeBetweenEnemies;
-    public int totalEnemiesInWave;
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(0.8f, 0f, 0f, 0.4f);
+        Gizmos.DrawCube(EnemyMoveZoneCenter, EnemyMoveZoneSize);
+    }
+#endif
 }
