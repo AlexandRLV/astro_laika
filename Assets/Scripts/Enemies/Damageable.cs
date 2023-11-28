@@ -17,7 +17,7 @@ public class Damageable : MonoBehaviour
     
     private HealthStatus _healthStatus;
 
-    private bool _shieldIsActive = true;
+    private bool _shieldIsActive;
     private float _currentHealth;
     private float _currentShield;
 
@@ -31,6 +31,8 @@ public class Damageable : MonoBehaviour
     {
         _healthStatus = healthStatus;
         _healthStatus.HealthBarChange(_currentHealth, _initialHealth);
+
+        _shieldIsActive = useShield;
 
         if (!useShield)
             _healthStatus.DeactivateShield();
@@ -71,7 +73,6 @@ public class Damageable : MonoBehaviour
         if (_currentShield >= _initialShield)
             return;
         
-        Debug.Log("repairing");
         _currentShield = Mathf.Clamp(_currentShield + _shieldRepairPerSecond * Time.deltaTime, 0, _initialShield);
         _healthStatus.ShieldBarChange(_currentShield, _initialShield);
     }
