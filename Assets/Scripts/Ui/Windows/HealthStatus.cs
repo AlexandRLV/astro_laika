@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public class HealthStatus : MonoBehaviour
 {
+    [SerializeField] GameObject _shieldVisuals;
+
     [SerializeField] Image _healthBar;
     [SerializeField] Image _shieldBar;
 
@@ -16,6 +18,11 @@ public class HealthStatus : MonoBehaviour
     public void ShieldBarChange(float currentValue, float maxValue)
     {
         _shieldBar.fillAmount = currentValue / maxValue;
+    }
+
+    public void DeactivateShield()
+    {
+        _shieldVisuals.SetActive(false);
     }
 
 }
