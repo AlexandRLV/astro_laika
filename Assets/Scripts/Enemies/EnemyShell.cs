@@ -12,7 +12,7 @@ public class EnemyShell : MonoBehaviour
         transform.Translate(-transform.up * _moveSpeed * Time.deltaTime);   
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
         var damageable = collision.gameObject.GetComponentInParent<Damageable>();
         if (damageable != null)

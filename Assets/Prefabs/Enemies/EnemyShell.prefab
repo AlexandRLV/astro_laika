@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 803386394452470703}
   - component: {fileID: 2901459656263814001}
-  - component: {fileID: 9146297974908210926}
+  - component: {fileID: 2363303165943044977}
   m_Layer: 8
   m_Name: EnemyShell
   m_TagString: Untagged
@@ -48,22 +48,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 5
   _damage: 5
---- !u!70 &9146297974908210926
-CapsuleCollider2D:
+--- !u!136 &2363303165943044977
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773081484008732618}
-  m_Enabled: 1
-  m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.00070657395, y: -0.0020492673}
-  m_Size: {x: 0.05348133, y: 0.19941163}
-  m_Direction: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.030403495
+  m_Height: 0.2088821
+  m_Direction: 1
+  m_Center: {x: 0.0013154149, y: -0.000000059604645, z: 0}
 --- !u!1 &2235619158012235393
 GameObject:
   m_ObjectHideFlags: 0
