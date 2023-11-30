@@ -6,7 +6,10 @@ namespace Ui.Windows
 {
     public class InGameUI : WindowBase
     {
+        public HealthStatus PlayerHealthStatus => _playerHealthStatus;
+        
         [SerializeField] private Button _pauseButton;
+        [SerializeField] private HealthStatus _playerHealthStatus;
         
         private void Start()
         {

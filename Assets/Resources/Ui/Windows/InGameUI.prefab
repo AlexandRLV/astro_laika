@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pauseButton: {fileID: 8083783588815420387}
+  _playerHealthStatus: {fileID: 5586436072436475383}
 --- !u!1 &6298523991351052111
 GameObject:
   m_ObjectHideFlags: 0
@@ -611,6 +612,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3466d60d303710c4d8ebd42f4318ae0d, type: 3}
+--- !u!114 &5586436072436475383 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2359287446818927209, guid: 3466d60d303710c4d8ebd42f4318ae0d, type: 3}
+  m_PrefabInstance: {fileID: 7870846757740943262}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af3eef5435db65c468f50f3b82480360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6578163124086849444 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3922786933040359482, guid: 3466d60d303710c4d8ebd42f4318ae0d, type: 3}

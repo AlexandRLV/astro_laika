@@ -1,4 +1,3 @@
-using DefaultNamespace;
 using UnityEngine;
 
 namespace Player
@@ -6,6 +5,7 @@ namespace Player
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] private float _maxY;
+        [SerializeField] private float _minY;
         [SerializeField] private float _maxOffset;
         
         private void Update()
@@ -25,25 +25,25 @@ namespace Player
             if (Input.touchCount == 0) return;
 
             var touch = Input.GetTouch(0);
-            
             var touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-            if (touchPosition.y > _maxY) return;
-            
-            MoveToPosition(touch.position.x);
+            MoveToPosition(touchPosition);
         }
 
         private void UpdateOnStandalone()
         {
-            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (mousePosition.y > _maxY) return;
+            if (!Input.GetMouseButton(0))
+                return;
             
-            MoveToPosition(mousePosition.x);
+            var mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            MoveToPosition(mousePosition);
         }
 
-        private void MoveToPosition(float x)
+        private void MoveToPosition(Vector3 position)
         {
-            x = Mathf.Clamp(x, -_maxOffset, _maxOffset);
-            transform.SetXPosition(x);
+            position.x = Mathf.Clamp(position.x, -_maxOffset, _maxOffset);
+            position.y = Mathf.Clamp(position.y, _minY, _maxY);
+            position.z = 0f;
+            transform.position = position;
         }
     }
 }

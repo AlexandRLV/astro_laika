@@ -1,4 +1,3 @@
-using DefaultNamespace;
 using System.Collections;
 using UnityEngine;
 
@@ -6,42 +5,46 @@ namespace Player
 {
     public class LaserController : MonoBehaviour
     {
-        [SerializeField] float damagePerSecond;
-        [SerializeField] Transform firePoint;
-        [SerializeField] float reloadTime;
-        [SerializeField] float useTime;
+        [SerializeField] private float damagePerSecond;
+        [SerializeField] private Transform firePoint;
+        [SerializeField] private float reloadTime;
+        [SerializeField] private float useTime;
 
-        [SerializeField] LineRenderer lineRenderer;
-        [SerializeField] ParticleSystem impactEffect;
-        [SerializeField] Vector3 impactEffectOffset;
-        [SerializeField] Light lightEffect;
+        [SerializeField] private LineRenderer lineRenderer;
+        [SerializeField] private ParticleSystem impactEffect;
+        [SerializeField] private Vector3 impactEffectOffset;
+        [SerializeField] private Light lightEffect;
 
-        bool isReloading;
-        bool seeTarget;
-        bool usingLaser;
-        bool powerMode;
+        private bool _isReloading;
+        private bool _seeTarget;
+        private bool _usingLaser;
+        private bool _powerMode;
 
-        GameObject targetObject;
-        Vector3 targetPoint;
-        RaycastHit hit;
-
+        private GameObject _targetObject;
+        private Vector3 _targetPoint;
+        
         private void Update()
         {
-            if (Physics.Raycast(firePoint.position, transform.forward, out hit, 100))
+            bool hitTriggers = Physics2D.queriesHitTriggers;
+            Physics2D.queriesHitTriggers = true;
+            var hit = Physics2D.Raycast(firePoint.position, Vector2.up);
+            Physics2D.queriesHitTriggers = hitTriggers;
+            
+            if (hit.collider != null)
             {
-                seeTarget = true;
-                targetPoint = hit.point;
-                targetObject = hit.collider.gameObject;
+                _seeTarget = true;
+                _targetPoint = hit.point;
+                _targetObject = hit.collider.gameObject;
             }
             else
             {
-                seeTarget = false;
-                targetObject = null;
+                _seeTarget = false;
+                _targetObject = null;
             }
 
-            if (powerMode) return;
+            if (_powerMode) return;
 
-            if (isReloading == false && seeTarget)
+            if (!_isReloading && _seeTarget)
             {
                 StartCoroutine(UseLaser(useTime));
                 StartCoroutine(LaserReload(reloadTime));
@@ -53,41 +56,40 @@ namespace Player
 
         private IEnumerator UseLaser(float time)
         {
-            usingLaser = true;
+            _usingLaser = true;
             yield return new WaitForSeconds(time);
-            usingLaser = false;
+            _usingLaser = false;
         }
 
         private IEnumerator LaserReload(float time)
         {
-            isReloading = true;
+            _isReloading = true;
             yield return new WaitForSeconds(time);
-            isReloading = false;
+            _isReloading = false;
         }
 
         private void ApplyDamage()
         {
-            if (usingLaser && targetObject != null)
-            {
-                Damageable damageable = targetObject.GetComponentInParent<Damageable>();
-
-                if (damageable) damageable.GetDamage(damagePerSecond * Time.deltaTime);
-
-            }
+            if (!_usingLaser || !_seeTarget)
+                return;
+            
+            var damageable = _targetObject.GetComponentInParent<Damageable>();
+            if (damageable != null)
+                damageable.GetDamage(damagePerSecond * Time.deltaTime);
         }
 
         private void LaserVisualControl()
         {
-            if (usingLaser && seeTarget)
+            if (_usingLaser && _seeTarget)
             {
                 lineRenderer.enabled = true;
                 impactEffect.Play();
                 lightEffect.enabled = true;
 
-                Vector3[] direction = { firePoint.position, targetPoint };
+                Vector3[] direction = { firePoint.position, _targetPoint };
                 lineRenderer.SetPositions(direction);
 
-                impactEffect.transform.position = hit.point - impactEffectOffset;
+                impactEffect.transform.position = _targetPoint - impactEffectOffset;
                 impactEffect.transform.rotation = Quaternion.LookRotation(firePoint.position);
             }
             else
