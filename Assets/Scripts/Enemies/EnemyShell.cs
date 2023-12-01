@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Damage;
 using UnityEngine;
 
 public class EnemyShell : MonoBehaviour
@@ -9,14 +8,14 @@ public class EnemyShell : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(-transform.up * _moveSpeed * Time.deltaTime);   
+        transform.Translate(-transform.up * (_moveSpeed * Time.deltaTime));   
     }
 
     private void OnTriggerEnter(Collider collision)
     {
         var damageable = collision.gameObject.GetComponentInParent<Damageable>();
         if (damageable != null)
-            damageable.GetDamage(_damage);
+            damageable.Damage(_damage, DamageType.Collision);
 
         Destroy(gameObject);
     }
