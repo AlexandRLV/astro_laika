@@ -1,4 +1,5 @@
 ﻿using Services.WindowsSystem;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,10 +11,16 @@ namespace Ui.Windows
         
         [SerializeField] private Button _pauseButton;
         [SerializeField] private HealthStatus _playerHealthStatus;
+        [SerializeField] private TextMeshProUGUI _scoresText;
         
         private void Start()
         {
             _pauseButton.onClick.AddListener(Pause);
+        }
+
+        public void UpdateScoresValue(int scores)
+        {
+            _scoresText.text = scores.ToString();
         }
 
         private void Pause()

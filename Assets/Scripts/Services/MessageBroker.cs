@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Services
 {
-    public delegate void ActionRef<T>(ref T value);
+    public delegate void ActionRef<T>(ref T message);
     
     public class MessageBroker
     {

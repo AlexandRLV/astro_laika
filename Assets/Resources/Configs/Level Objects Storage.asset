@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21418eec3144e2bb92dceef01f7330e, type: 3}
+  m_Name: Level Objects Storage
+  m_EditorClassIdentifier: 
+  LevelObjects:
+  - Type: 0
+    ScoresForDestroy: 25
+    ShotsToDestroy: 10
+    LaserPercentBonusForDestroy: 1
+    ShieldPercentBonusForDestroy: 1
+    CollisionToPlayerDamagePercent: 1
+    ScoresPenaltyOnCollision: 20
+    ShootDamagePercent: 0.2
+  - Type: 1
+    ScoresForDestroy: 15
+    ShotsToDestroy: 3
+    LaserPercentBonusForDestroy: 0.3
+    ShieldPercentBonusForDestroy: 0.05
+    CollisionToPlayerDamagePercent: 0.3
+    ScoresPenaltyOnCollision: 10
+    ShootDamagePercent: 0.1
+  - Type: 2
+    ScoresForDestroy: 10
+    ShotsToDestroy: 10
+    LaserPercentBonusForDestroy: 0.2
+    ShieldPercentBonusForDestroy: 0.05
+    CollisionToPlayerDamagePercent: 0.3
+    ScoresPenaltyOnCollision: 10
+    ShootDamagePercent: 0
+  - Type: 3
+    ScoresForDestroy: 10
+    ShotsToDestroy: 7
+    LaserPercentBonusForDestroy: 0.1
+    ShieldPercentBonusForDestroy: 0.02
+    CollisionToPlayerDamagePercent: 0.2
+    ScoresPenaltyOnCollision: 5
+    ShootDamagePercent: 0
+  - Type: 4
+    ScoresForDestroy: 5
+    ShotsToDestroy: 5
+    LaserPercentBonusForDestroy: 0.05
+    ShieldPercentBonusForDestroy: 0.01
+    CollisionToPlayerDamagePercent: 0.15
+    ScoresPenaltyOnCollision: 5
+    ShootDamagePercent: 0
+  - Type: 5
+    ScoresForDestroy: 5
+    ShotsToDestroy: 3
+    LaserPercentBonusForDestroy: 0.05
+    ShieldPercentBonusForDestroy: 0
+    CollisionToPlayerDamagePercent: 0.1
+    ScoresPenaltyOnCollision: 2
+    ShootDamagePercent: 0
+  - Type: 6
+    ScoresForDestroy: 5
+    ShotsToDestroy: 2
+    LaserPercentBonusForDestroy: 0.05
+    ShieldPercentBonusForDestroy: 0
+    CollisionToPlayerDamagePercent: 0.1
+    ScoresPenaltyOnCollision: 2
+    ShootDamagePercent: 0

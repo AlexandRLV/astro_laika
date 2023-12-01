@@ -1,4 +1,5 @@
 using System.Collections;
+using Damage;
 using UnityEngine;
 
 namespace Player
@@ -22,6 +23,8 @@ namespace Player
 
         private GameObject _targetObject;
         private Vector3 _targetPoint;
+
+        private Coroutine _shootCoroutine;
         
         private void Update()
         {
@@ -42,29 +45,39 @@ namespace Player
                 _targetObject = null;
             }
 
-            if (_powerMode) return;
-
-            if (!_isReloading && _seeTarget)
-            {
-                StartCoroutine(UseLaser(useTime));
-                StartCoroutine(LaserReload(reloadTime));
-            }
-
             ApplyDamage();
             LaserVisualControl();
+            
+            if (_powerMode) return;
+            if (!_isReloading && _seeTarget)
+                StartShoot();
         }
 
-        private IEnumerator UseLaser(float time)
+        private void StartShoot()
         {
+            if (_shootCoroutine != null)
+                StopCoroutine(_shootCoroutine);
+            
+            _shootCoroutine = StartCoroutine(UseLaser(useTime, reloadTime));
+        }
+
+        public void RestoreLaset(float percent)
+        {
+            // TODO
+        }
+
+        private IEnumerator UseLaser(float shootTime, float reloadTime)
+        {
+            _isReloading = false;
             _usingLaser = true;
-            yield return new WaitForSeconds(time);
+            
+            yield return new WaitForSeconds(shootTime);
+            
             _usingLaser = false;
-        }
-
-        private IEnumerator LaserReload(float time)
-        {
             _isReloading = true;
-            yield return new WaitForSeconds(time);
+            
+            yield return new WaitForSeconds(reloadTime);
+            
             _isReloading = false;
         }
 
@@ -75,7 +88,7 @@ namespace Player
             
             var damageable = _targetObject.GetComponentInParent<Damageable>();
             if (damageable != null)
-                damageable.GetDamage(damagePerSecond * Time.deltaTime);
+                damageable.Damage(damagePerSecond * Time.deltaTime, DamageType.Laser);
         }
 
         private void LaserVisualControl()

@@ -1,3 +1,4 @@
+using Damage;
 using UnityEngine;
 
 public class EnemyMoveController : MonoBehaviour
@@ -47,14 +48,9 @@ public class EnemyMoveController : MonoBehaviour
         }
     }
 
-    private void OnDestroyed()
+    private void OnDestroyed(DamageType damageType)
     {
         _waveManager.EnemyDestroyed(gameObject);
-        Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
         _enemyDamageable.OnDestroyed -= OnDestroyed;
     }
 
