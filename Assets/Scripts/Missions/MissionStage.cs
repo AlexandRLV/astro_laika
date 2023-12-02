@@ -1,4 +1,5 @@
 ﻿using System;
+using Damage;
 using DI;
 using LevelObjects;
 using LevelObjects.Messages;
@@ -28,13 +29,15 @@ namespace Missions
         
         public void Initialize()
         {
+            Debug.Log($"Initializing mission stage {SpawnObjectsType} with {ObjectsCount} objects");
+            
             _destroyedCount = 0;
             GameContainer.InjectToInstance(this);
             _messageBroker.Subscribe<LevelObjectDestroyedMessage>(OnLevelObjectDestroyed);
 
             _targetData = _levelObjectsStorage.FindDataForType(SpawnObjectsType);
             _spawner = _spawnerService.GetSpawnerForType(SpawnObjectsType);
-            _spawner.StartSpawn(ObjectsCount);
+            _spawner.StartSpawn(ObjectsCount, _targetData);
         }
 
         private void OnLevelObjectDestroyed(ref LevelObjectDestroyedMessage message)
@@ -43,7 +46,7 @@ namespace Missions
                 return;
 
             _destroyedCount++;
-            if (!message.DestroyedByCollision)
+            if (message.DamageType != DamageType.Collision)
                 _scoresCounter.AddScores(_targetData.ScoresForDestroy);
             
             if (_destroyedCount < ObjectsCount)

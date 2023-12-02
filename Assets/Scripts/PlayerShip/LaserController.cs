@@ -6,51 +6,56 @@ namespace Player
 {
     public class LaserController : MonoBehaviour
     {
-        [SerializeField] private float damagePerSecond;
-        [SerializeField] private Transform firePoint;
-        [SerializeField] private float reloadTime;
-        [SerializeField] private float useTime;
+        [Header("Parameters")]
+        [SerializeField] private float _damage;
+        [SerializeField] private float _reloadTime;
+        [SerializeField] private float _laserShowTime;
+        
+        [Header("References")]
+        [SerializeField] private Transform _firePoint;
+        [SerializeField] private LineRenderer _lineRenderer;
+        [SerializeField] private ParticleSystem _impactEffect;
+        [SerializeField] private Vector3 _impactEffectOffset;
 
-        [SerializeField] private LineRenderer lineRenderer;
-        [SerializeField] private ParticleSystem impactEffect;
-        [SerializeField] private Vector3 impactEffectOffset;
-        [SerializeField] private Light lightEffect;
-
-        private bool _isReloading;
-        private bool _seeTarget;
-        private bool _usingLaser;
         private bool _powerMode;
+        private bool _isShooting;
+        private float _shootTimer;
 
         private GameObject _targetObject;
         private Vector3 _targetPoint;
+        private Vector3[] _linePoints;
 
         private Coroutine _shootCoroutine;
-        
+
+        private void Start()
+        {
+            _linePoints = new Vector3[2];
+            DeactivateLaser();
+        }
+
         private void Update()
         {
+            _shootTimer -= Time.deltaTime;
+            if (_shootTimer > 0f && !_powerMode)
+                return;
+            
             bool hitTriggers = Physics2D.queriesHitTriggers;
             Physics2D.queriesHitTriggers = true;
-            var hit = Physics2D.Raycast(firePoint.position, Vector2.up);
+            var hit = Physics2D.Raycast(_firePoint.position, Vector2.up);
             Physics2D.queriesHitTriggers = hitTriggers;
             
-            if (hit.collider != null)
+            if (hit.collider == null)
             {
-                _seeTarget = true;
-                _targetPoint = hit.point;
-                _targetObject = hit.collider.gameObject;
-            }
-            else
-            {
-                _seeTarget = false;
                 _targetObject = null;
+                return;
             }
-
-            ApplyDamage();
-            LaserVisualControl();
             
-            if (_powerMode) return;
-            if (!_isReloading && _seeTarget)
-                StartShoot();
+            _targetPoint = hit.point;
+            _targetObject = hit.collider.gameObject;
+            _shootTimer = _reloadTime;
+            
+            ApplyDamage();
+            StartShoot();
         }
 
         private void StartShoot()
@@ -58,65 +63,52 @@ namespace Player
             if (_shootCoroutine != null)
                 StopCoroutine(_shootCoroutine);
             
-            _shootCoroutine = StartCoroutine(UseLaser(useTime, reloadTime));
+            _shootCoroutine = StartCoroutine(UseLaser(_laserShowTime));
         }
 
         public void RestoreLaset(float percent)
         {
-            // TODO
+            float timerRemoveValue = _reloadTime * percent;
+            _shootTimer -= timerRemoveValue;
         }
 
-        private IEnumerator UseLaser(float shootTime, float reloadTime)
+        private IEnumerator UseLaser(float shootTime)
         {
-            _isReloading = false;
-            _usingLaser = true;
+            _lineRenderer.enabled = true;
+            _impactEffect.Play();
+
+            _linePoints[0] = _firePoint.position;
+            _linePoints[1] = _targetPoint;
+            _lineRenderer.SetPositions(_linePoints);
+
+            _impactEffect.transform.position = _targetPoint - _impactEffectOffset;
+            _impactEffect.transform.rotation = Quaternion.LookRotation(_firePoint.position);
+
+            float timer = 0f;
+            while (timer < shootTime)
+            {
+                timer += Time.deltaTime;
+                _linePoints[0] = _firePoint.position;
+                _linePoints[1] = _targetPoint;
+                _lineRenderer.SetPositions(_linePoints);
+                yield return null;
+            }
             
-            yield return new WaitForSeconds(shootTime);
-            
-            _usingLaser = false;
-            _isReloading = true;
-            
-            yield return new WaitForSeconds(reloadTime);
-            
-            _isReloading = false;
+            DeactivateLaser();
         }
 
         private void ApplyDamage()
         {
-            if (!_usingLaser || !_seeTarget)
-                return;
-            
+            Debug.Log($"Applying {_damage} damage");
             var damageable = _targetObject.GetComponentInParent<Damageable>();
             if (damageable != null)
-                damageable.Damage(damagePerSecond * Time.deltaTime, DamageType.Laser);
+                damageable.Damage(_damage, DamageType.Laser);
         }
-
-        private void LaserVisualControl()
+        
+        private void DeactivateLaser()
         {
-            if (_usingLaser && _seeTarget)
-            {
-                lineRenderer.enabled = true;
-                impactEffect.Play();
-                lightEffect.enabled = true;
-
-                Vector3[] direction = { firePoint.position, _targetPoint };
-                lineRenderer.SetPositions(direction);
-
-                impactEffect.transform.position = _targetPoint - impactEffectOffset;
-                impactEffect.transform.rotation = Quaternion.LookRotation(firePoint.position);
-            }
-            else
-            {
-                lineRenderer.enabled = false;
-                impactEffect.Stop();
-                lightEffect.enabled = false;
-            }
-        }
-
-        private IEnumerator LaserPowerMode()
-        {
-            // for the future
-            yield return null;
+            _lineRenderer.enabled = false;
+            _impactEffect.Stop();
         }
     }
 }

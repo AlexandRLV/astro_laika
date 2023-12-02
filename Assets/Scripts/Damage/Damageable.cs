@@ -13,7 +13,6 @@ namespace Damage
         [Header("Shield")]
         [SerializeField] private bool _useShield;
         [SerializeField] private float _initialShield;
-        [SerializeField] private float _shieldRepairPerSecond;
     
         private HealthStatus _healthStatus;
 

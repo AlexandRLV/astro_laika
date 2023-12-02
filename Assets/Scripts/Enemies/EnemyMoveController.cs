@@ -1,28 +1,37 @@
 using Damage;
+using LevelObjects;
 using UnityEngine;
 
 public class EnemyMoveController : MonoBehaviour
 {
+    [Header("Parameters")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float pointOffset;
-    [SerializeField] private bool isStatic = false;
+    [SerializeField] private bool isStatic;
 
+    [Header("Move point")]
     [SerializeField] private Vector3 movePoint;
     [SerializeField] private bool drawGizmos;
 
+    [Header("Move zone")]
     [SerializeField] private Vector3 _moveZoneCenter;
     [SerializeField] private Vector3 _moveZoneSize;
 
+    [Header("Components")]
     [SerializeField] private HealthStatus _healthStatus;
     [SerializeField] private Damageable _enemyDamageable;
+    [SerializeField] private EnemyShootController _shootController;
     
     private EnemyShipsWaveManager _waveManager;
+    private LevelObjectData _enemyData;
 
-    public void Init( Vector3 moveZoneCenter, Vector3 moveZoneSize, EnemyShipsWaveManager waveManager)
+    public void Init(Vector3 moveZoneCenter, Vector3 moveZoneSize, EnemyShipsWaveManager waveManager, LevelObjectData enemyData)
     {
         _moveZoneCenter = moveZoneCenter;
         _moveZoneSize = moveZoneSize;
         _waveManager = waveManager;
+        _enemyData = enemyData;
+        _shootController.Initialize(enemyData);
         
         _enemyDamageable.SetStatusCanvas(_healthStatus);
         _enemyDamageable.OnDestroyed += OnDestroyed;
@@ -50,7 +59,7 @@ public class EnemyMoveController : MonoBehaviour
 
     private void OnDestroyed(DamageType damageType)
     {
-        _waveManager.EnemyDestroyed(gameObject);
+        _waveManager.EnemyDestroyed(this);
         _enemyDamageable.OnDestroyed -= OnDestroyed;
     }
 

@@ -77,26 +77,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe37fa08ecb9de546a02bcfa7aedf02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoints:
+  _startDelay: 2
+  _timeBetweenWaves: 6
+  _waitForLastEnemy: 1
+  _enemyMoveZoneWidth: 4.31
+  _enemyMoveZoneHeight: 6.41
+  _enemyMoveZoneOffset: {x: 0, y: 1.34, z: 0}
+  _spawnPoints:
   - {fileID: 7574737031459479265}
   - {fileID: 7574737032812665948}
-  enemyMoveZoneWidth: 4.31
-  enemyMoveZoneHeight: 6.41
-  enemyMoveZoneOffset: {x: 0, y: 1.34, z: 0}
-  startDelay: 2
-  timeBetweenWaves: 6
-  waitForLastEnemy: 1
-  countdownToNewWave: 5
-  waveIndex: 0
-  enemiesAlive: 0
   allWaves:
   - enemies:
-    - {fileID: 6350656074070158467, guid: 85d81db5f187d4244869fd20db37c7b1, type: 3}
+    - {fileID: 7269087979491892633, guid: 85d81db5f187d4244869fd20db37c7b1, type: 3}
     countOfEnemy: 05000000
     timeBetweenEnemies: 2
     totalEnemiesInWave: 5
   - enemies:
-    - {fileID: 6350656074070158467, guid: 85d81db5f187d4244869fd20db37c7b1, type: 3}
+    - {fileID: 7269087979491892633, guid: 85d81db5f187d4244869fd20db37c7b1, type: 3}
     countOfEnemy: 05000000
     timeBetweenEnemies: 2
     totalEnemiesInWave: 5

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Missions
 {
-    public class MissionsController : MonoBehaviour
+    public class MissionsController
     {
         private MissionData _data;
         private MissionStage _currentStage;
@@ -11,6 +11,8 @@ namespace Missions
         
         public void StartMission(MissionData data)
         {
+            Debug.Log("Starting mission!");
+            
             _stages = new Queue<MissionStage>();
             foreach (var stage in data.Stages)
             {

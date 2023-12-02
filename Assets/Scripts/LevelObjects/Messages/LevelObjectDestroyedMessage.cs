@@ -1,8 +1,10 @@
-﻿namespace LevelObjects.Messages
+﻿using Damage;
+
+namespace LevelObjects.Messages
 {
     public struct LevelObjectDestroyedMessage
     {
-        public bool DestroyedByCollision;
+        public DamageType DamageType;
         public LevelObjectData Data;
     }
 }

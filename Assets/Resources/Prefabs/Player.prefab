@@ -64,6 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerDamageable: {fileID: 3478791921876865024}
+  _laser: {fileID: 1374486142597953538}
 --- !u!114 &3478791921876865024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,8 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initialHealth: 100
-  useShield: 1
-  autoRepairShield: 1
+  _useShield: 0
   _initialShield: 100
   _shieldRepairPerSecond: 10
 --- !u!1001 &2941217389018037609
@@ -198,12 +198,19 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerLaser
       objectReference: {fileID: 0}
-    - target: {fileID: 8137401146663401051, guid: bf33a48c7bb50644db2011e9abb70e24, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf33a48c7bb50644db2011e9abb70e24, type: 3}
+--- !u!114 &1374486142597953538 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7023560348269497750, guid: bf33a48c7bb50644db2011e9abb70e24, type: 3}
+  m_PrefabInstance: {fileID: 8244847584395408788}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93dcd31a1ad3ab441b45e81d4876491f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6384739843108552094 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3094168927067211786, guid: bf33a48c7bb50644db2011e9abb70e24, type: 3}

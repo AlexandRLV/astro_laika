@@ -1,60 +1,83 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using LevelObjects;
 using UnityEngine;
 
-public class EnemyShipsWaveManager : MonoBehaviour
+public class EnemyShipsWaveManager : ObjectsSpawnerBase
 {
-    [SerializeField] private Transform[] spawnPoints;
-    [SerializeField, Range(1, 10)] private float enemyMoveZoneWidth, enemyMoveZoneHeight;
-    [SerializeField] private Vector3 enemyMoveZoneOffset;
-
-    [SerializeField] private float startDelay;
-    [SerializeField] private float timeBetweenWaves;
-    [SerializeField] private bool waitForLastEnemy;
-
-    [SerializeField] private float countdownToNewWave = 0;
-    [SerializeField] private int waveIndex = 0;
-    [SerializeField] private int enemiesAlive;
-
+    private Vector3 EnemyMoveZoneCenter => transform.position + _enemyMoveZoneOffset;
+    private Vector3 EnemyMoveZoneSize => new(_enemyMoveZoneWidth, _enemyMoveZoneHeight, 0f);
+    
+    [Header("Timers")]
+    [SerializeField] private float _startDelay;
+    [SerializeField] private float _timeBetweenWaves;
+    [SerializeField] private bool _waitForLastEnemy;
+    
+    [Header("Spawn zones")]
+    [SerializeField, Range(1, 10)] private float _enemyMoveZoneWidth;
+    [SerializeField, Range(1, 10)] private float _enemyMoveZoneHeight;
+    [SerializeField] private Vector3 _enemyMoveZoneOffset;
+    [SerializeField] private Transform[] _spawnPoints;
+    
+    [Header("Waves")]
     [SerializeField] private Wave[] allWaves;
-    
-    private Vector3 EnemyMoveZoneCenter => transform.position + enemyMoveZoneOffset;
-    private Vector3 EnemyMoveZoneSize => new(enemyMoveZoneWidth, enemyMoveZoneHeight, 0f);
 
-    private List<GameObject> _spawnedEnemies;
+    private bool _canSpawn;
+    private int _remainingCount;
     
-    public Vector3 MovingZoneSize(Vector3 center, float sizeX, float sizeY)
-    {
-        Vector3 zero = Vector3.zero;
-        return zero;
-    }
-
-    public void EnemyDestroyed(GameObject enemy) => _spawnedEnemies.Remove(enemy);
+    private float _countdownToNewWave;
+    private int _waveIndex;
+    private int _enemiesAlive;
+    
+    private LevelObjectData _enemyData;
+    private List<EnemyMoveController> _spawnedEnemies;
 
     private void Awake()
     {
-        _spawnedEnemies = new List<GameObject>();
-        countdownToNewWave = startDelay;
+        _spawnedEnemies = new List<EnemyMoveController>();
+    }
+    
+    public override void StartSpawn(int count, LevelObjectData data)
+    {
+        _countdownToNewWave = _startDelay;
+        _enemyData = data;
+        _canSpawn = true;
+        _remainingCount = count;
+    }
+
+    public override void StopSpawn()
+    {
+        _canSpawn = false;
+        _remainingCount = 0;
+    }
+
+    public void EnemyDestroyed(EnemyMoveController enemy)
+    {
+        _spawnedEnemies.Remove(enemy);
+        _remainingCount--;
+        _enemiesAlive--;
     }
 
     private void Update()
     {
-        if (waitForLastEnemy && enemiesAlive > 0)
+        if (!_canSpawn || _remainingCount <= 0)
+            return;
+        
+        if (_waitForLastEnemy && _enemiesAlive > 0)
             return;
 
-        if (countdownToNewWave <= 0 && waveIndex < allWaves.Length)
+        if (_countdownToNewWave <= 0 && _waveIndex < allWaves.Length)
         {
-            if (allWaves[waveIndex].totalEnemiesInWave > 0)
-            {
-                StartCoroutine(SpawnWave(waveIndex));
-                countdownToNewWave = timeBetweenWaves;
-            }
-            else return;
+            if (allWaves[_waveIndex].totalEnemiesInWave <= 0)
+                return;
+            
+            StartCoroutine(SpawnWave(_waveIndex));
+            _countdownToNewWave = _timeBetweenWaves;
         }
 
-        countdownToNewWave -= Time.deltaTime;
-        countdownToNewWave = Mathf.Clamp(countdownToNewWave, 0, timeBetweenWaves);
+        _countdownToNewWave -= Time.deltaTime;
+        _countdownToNewWave = Mathf.Clamp(_countdownToNewWave, 0, _timeBetweenWaves);
     }
 
     private void OnDestroy()
@@ -67,29 +90,37 @@ public class EnemyShipsWaveManager : MonoBehaviour
         _spawnedEnemies.Clear();
     }
 
-    private void SpawnEnemy(GameObject enemy)
+    private void SpawnEnemy(EnemyMoveController enemy)
     {
-        int i = Mathf.RoundToInt(Random.Range(0, spawnPoints.Length));
-        enemiesAlive++;
-        GameObject newEnemy = Instantiate(enemy, spawnPoints[i].position, enemy.transform.rotation);
-        newEnemy.GetComponent<EnemyMoveController>().Init(EnemyMoveZoneCenter, EnemyMoveZoneSize, this);
+        int i = Mathf.RoundToInt(Random.Range(0, _spawnPoints.Length));
+        _enemiesAlive++;
+        var newEnemy = Instantiate(enemy, _spawnPoints[i].position, enemy.transform.rotation);
+        newEnemy.Init(EnemyMoveZoneCenter, EnemyMoveZoneSize, this, _enemyData);
         _spawnedEnemies.Add(newEnemy);
     }
 
     private IEnumerator SpawnWave(int waveIndex)
     {
         Wave wave = allWaves[waveIndex];
-        //enemiesAlive += wave.countOfEnemy.Sum();
 
+        int spawnedCount = 0;
+        
         for (int i = 0; i < wave.enemies.Count; i++)
         {
+            if (spawnedCount >= _remainingCount)
+                break;
+            
             for (int j = 0; j < wave.countOfEnemy[i]; j++)
             {
                 SpawnEnemy(wave.enemies[i]);
+                spawnedCount++;
+                if (spawnedCount >= _remainingCount)
+                    break;
+                
                 yield return new WaitForSeconds(wave.timeBetweenEnemies);
             }
         }
-        this.waveIndex++;
+        _waveIndex++;
     }
     
 #if UNITY_EDITOR

@@ -16,6 +16,7 @@ namespace Ui.Windows
         private void Start()
         {
             _pauseButton.onClick.AddListener(Pause);
+            UpdateScoresValue(0);
         }
 
         public void UpdateScoresValue(int scores)

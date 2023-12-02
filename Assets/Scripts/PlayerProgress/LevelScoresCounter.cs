@@ -1,13 +1,20 @@
 ﻿using DI;
+using Services.WindowsSystem;
 using Ui.Windows;
 
 namespace PlayerProgress
 {
     public class LevelScoresCounter
     {
-        [Inject] private InGameUI _inGameUI;
+        private InGameUI _inGameUI;
         
         public int CurrentScores { get; private set; }
+
+        [Construct]
+        public LevelScoresCounter(WindowsSystem _windowsSystem)
+        {
+            _windowsSystem.TryGetWindow(out _inGameUI);
+        }
 
         public void AddScores(int amount)
         {

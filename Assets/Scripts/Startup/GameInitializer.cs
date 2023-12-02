@@ -21,7 +21,7 @@ namespace Startup
         {
             new GameMapInitializer(),
             new PlayerInitializer(),
-            new EnemiesInitializer(),
+            new MissionsInitializer(),
         };
 
         [Inject] private SoundsSystem _soundsSystem;

@@ -29,7 +29,11 @@ namespace DI
 
             var constructor = constructors.FirstOrDefault();
             if (constructor == null)
-                return Activator.CreateInstance<T>();
+            {
+                var instance = Activator.CreateInstance<T>();
+                InjectToInstance((object)instance);
+                return instance;
+            }
 
             var parameters = constructor.GetParameters();
             object[] parametersValues = ArrayPool<object>.New(parameters.Length);
@@ -44,9 +48,9 @@ namespace DI
                 parametersValues[i] = value;
             }
 
-            object instance = constructor.Invoke(parametersValues);
-            InjectToInstance(instance);
-            return (T)instance;
+            object typedInstance = constructor.Invoke(parametersValues);
+            InjectToInstance(typedInstance);
+            return (T)typedInstance;
         }
         
         // Method for instantiating prefab and passing all [Inject] fields and methods in it

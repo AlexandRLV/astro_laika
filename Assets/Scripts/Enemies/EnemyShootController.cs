@@ -1,3 +1,4 @@
+using LevelObjects;
 using UnityEngine;
 
 public class EnemyShootController : MonoBehaviour
@@ -6,9 +7,15 @@ public class EnemyShootController : MonoBehaviour
     [SerializeField] private Transform _firePoint;
     [SerializeField] private EnemyShell _shellPrefab;
 
-
+    private LevelObjectData _enemyData;
+    
     private bool _canShoot = false;
     private float _reloadTimer;
+
+    public void Initialize(LevelObjectData data)
+    {
+        _enemyData = data;
+    }
 
     private void Start()
     {

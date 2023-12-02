@@ -1,4 +1,5 @@
-﻿using Damage;
+﻿using System;
+using Damage;
 using DI;
 using LevelObjects.Messages;
 using Services;
@@ -8,6 +9,8 @@ namespace LevelObjects
 {
     public class LevelDestroyableObject : MonoBehaviour
     {
+        public event Action<LevelDestroyableObject> OnObjectDestroyed;
+        
         [SerializeField] private Damageable _damageable;
         [SerializeField] private HealthStatus _healthStatus;
 
@@ -28,9 +31,12 @@ namespace LevelObjects
 
         private void OnDestroyed(DamageType damageType)
         {
+            _damageable.OnDestroyed -= OnDestroyed;
+            OnObjectDestroyed?.Invoke(this);
+            
             var message = new LevelObjectDestroyedMessage
             {
-                DestroyedByCollision = damageType == DamageType.Collision,
+                DamageType = damageType,
                 Data = _data,
             };
             _messageBroker.Trigger(ref message);

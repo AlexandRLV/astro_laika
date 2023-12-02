@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using DefaultNamespace;
+using DI;
 using UnityEngine;
 
 namespace LevelObjects
 {
-    public class LevelObjectsSpawner : MonoBehaviour
+    public class LevelObjectsSpawner : ObjectsSpawnerBase
     {
         [Header("First object")]
         [SerializeField] private bool _spawnFirstObject;
@@ -15,14 +16,30 @@ namespace LevelObjects
         [SerializeField] private Vector2 _minMaxTimeToSpawn;
         [SerializeField] private float _maxXOffset;
         [SerializeField] private float _yToDespawn;
-        [SerializeField] private GameObject[] _spawnObjects;
-
+        [SerializeField] private LevelDestroyableObject[] _spawnObjects;
+        
         private float _timer;
-        private List<GameObject> _spawnedObjects;
+        private bool _canSpawn;
+        private int _remainingCount;
+        private LevelObjectData _data;
+        private List<LevelDestroyableObject> _spawnedObjects;
+
+        public override void StartSpawn(int count, LevelObjectData data)
+        {
+            _remainingCount = count;
+            _canSpawn = true;
+            _data = data;
+        }
+
+        public override void StopSpawn()
+        {
+            _remainingCount = 0;
+            _canSpawn = false;
+        }
 
         private void Awake()
         {
-            _spawnedObjects = new List<GameObject>();
+            _spawnedObjects = new List<LevelDestroyableObject>();
             SetTimeToSpawn();
             
             if (_spawnFirstObject)
@@ -33,7 +50,7 @@ namespace LevelObjects
         {
             foreach (var spawnedObject in _spawnedObjects)
             {
-                Destroy(spawnedObject);
+                Destroy(spawnedObject.gameObject);
             }
         }
 
@@ -41,7 +58,7 @@ namespace LevelObjects
         {
             UpdateSpawnedObjects();
             
-            if (_spawnedObjects.Count >= _maxActiveObjects)
+            if (_spawnedObjects.Count >= _maxActiveObjects || !_canSpawn || _remainingCount <= 0)
                 return;
             
             _timer -= Time.deltaTime;
@@ -57,7 +74,8 @@ namespace LevelObjects
             {
                 var spawnedObject = _spawnedObjects[i];
                 if (spawnedObject.transform.position.y > _yToDespawn) continue;
-                
+
+                spawnedObject.OnObjectDestroyed -= OnObjectDestroyed;
                 Destroy(spawnedObject);
                 _spawnedObjects.RemoveAt(i);
             }
@@ -71,12 +89,22 @@ namespace LevelObjects
         private void SpawnRandomObject(float yOffset = 0f)
         {
             var objectToSpawn = _spawnObjects.GetRandom();
-            var spawnedObject = Instantiate(objectToSpawn);
+            var spawnedObject = GameContainer.InstantiateAndResolve(objectToSpawn);
             spawnedObject.transform.position = transform.position
                 .AddY(yOffset)
                 .WithX(Random.Range(-_maxXOffset, _maxXOffset));
             
+            spawnedObject.InitializeWithData(_data);
+            spawnedObject.OnObjectDestroyed += OnObjectDestroyed;
+            
             _spawnedObjects.Add(spawnedObject);
+        }
+
+        private void OnObjectDestroyed(LevelDestroyableObject target)
+        {
+            target.OnObjectDestroyed -= OnObjectDestroyed;
+            _spawnedObjects.Remove(target);
+            _remainingCount--;
         }
     }
 }
