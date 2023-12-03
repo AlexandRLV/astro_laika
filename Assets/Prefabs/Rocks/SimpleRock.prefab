@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 678689343}
   - component: {fileID: 678689344}
+  - component: {fileID: 7972053346965053846}
   m_Layer: 0
   m_Name: 3
   m_TagString: Untagged
@@ -84,6 +85,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7972053346965053846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678689342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bea24a160974b519632c5ea7fe931ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotateAxis: 4
+  _randomRotation: 0
+  _speed: 3
 --- !u!1 &7740953121990719176
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +112,6 @@ GameObject:
   - component: {fileID: 7740953121990719183}
   - component: {fileID: 5669877736875948935}
   - component: {fileID: 4398566210183077209}
-  - component: {fileID: 7781046045562680348}
   - component: {fileID: 7331137472862792299}
   m_Layer: 0
   m_Name: SimpleRock
@@ -161,24 +176,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7305431f6de2e6c45ac32f91d8280f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialHealth: 0
+  _initialHealth: 2
   _useShield: 0
   _initialShield: 0
---- !u!114 &7781046045562680348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7740953121990719176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bea24a160974b519632c5ea7fe931ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rotateAxis: 4
-  _randomRotation: 0
-  _speed: 3
 --- !u!61 &7331137472862792299
 BoxCollider2D:
   m_ObjectHideFlags: 0

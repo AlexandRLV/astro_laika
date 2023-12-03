@@ -33,7 +33,7 @@ public class EnemyMoveController : MonoBehaviour
         _enemyData = enemyData;
         _shootController.Initialize(enemyData);
         
-        _enemyDamageable.SetStatusCanvas(_healthStatus);
+        _enemyDamageable.Initialize(_healthStatus);
         _enemyDamageable.OnDestroyed += OnDestroyed;
 
         movePoint = EnemyExtentions.CalculateNewMovePoint(_moveZoneCenter, _moveZoneSize);

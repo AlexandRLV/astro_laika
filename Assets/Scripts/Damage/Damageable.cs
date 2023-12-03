@@ -20,14 +20,11 @@ namespace Damage
         private float _currentHealth;
         private float _currentShield;
 
-        private void Awake()
+        public void Initialize(HealthStatus healthStatus)
         {
             _currentHealth = _initialHealth;
             _currentShield = _initialShield;
-        }
-
-        public void SetStatusCanvas(HealthStatus healthStatus)
-        {
+            
             _healthStatus = healthStatus;
             _healthStatus.HealthBarChange(_currentHealth, _initialHealth);
 

@@ -19,7 +19,7 @@ namespace Player
         private void Start()
         {
             _windowsSystem.TryGetWindow(out InGameUI window);
-            _playerDamageable.SetStatusCanvas(window.PlayerHealthStatus);
+            _playerDamageable.Initialize(window.PlayerHealthStatus);
             _messageBroker.Subscribe<LevelObjectDestroyedMessage>(OnLevelObjectDestroyed);
         }
 

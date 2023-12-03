@@ -10,6 +10,7 @@ namespace Player
         [SerializeField] private float _damage;
         [SerializeField] private float _reloadTime;
         [SerializeField] private float _laserShowTime;
+        [SerializeField] private float _maxY;
         
         [Header("References")]
         [SerializeField] private Transform _firePoint;
@@ -45,6 +46,12 @@ namespace Player
             Physics2D.queriesHitTriggers = hitTriggers;
             
             if (hit.collider == null)
+            {
+                _targetObject = null;
+                return;
+            }
+
+            if (hit.point.y > _maxY)
             {
                 _targetObject = null;
                 return;

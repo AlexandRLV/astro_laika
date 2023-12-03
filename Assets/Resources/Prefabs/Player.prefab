@@ -80,7 +80,6 @@ MonoBehaviour:
   _initialHealth: 100
   _useShield: 0
   _initialShield: 100
-  _shieldRepairPerSecond: 10
 --- !u!1001 &2941217389018037609
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -193,6 +192,10 @@ PrefabInstance:
     - target: {fileID: 3094168927067211786, guid: bf33a48c7bb50644db2011e9abb70e24, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7023560348269497750, guid: bf33a48c7bb50644db2011e9abb70e24, type: 3}
+      propertyPath: _maxY
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7911437490342912594, guid: bf33a48c7bb50644db2011e9abb70e24, type: 3}
       propertyPath: m_Name

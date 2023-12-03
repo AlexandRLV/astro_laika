@@ -25,7 +25,7 @@ namespace Environment
 #endif
             
             float angle = _speed * Time.deltaTime;
-            transform.Rotate(Vector3.up, angle);
+            transform.Rotate(_rotateVector, angle);
         }
 
         private void UpdateRotateVector()

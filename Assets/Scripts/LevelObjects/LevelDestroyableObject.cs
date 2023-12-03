@@ -20,7 +20,7 @@ namespace LevelObjects
         
         private void Start()
         {
-            _damageable.SetStatusCanvas(_healthStatus);
+            _damageable.Initialize(_healthStatus);
             _damageable.OnDestroyed += OnDestroyed;
         }
 
