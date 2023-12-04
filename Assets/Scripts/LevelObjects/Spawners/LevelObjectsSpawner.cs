@@ -88,11 +88,12 @@ namespace LevelObjects
 
         private void SpawnRandomObject(float yOffset = 0f)
         {
-            var objectToSpawn = _spawnObjects.GetRandom();
-            var spawnedObject = GameContainer.InstantiateAndResolve(objectToSpawn);
-            spawnedObject.transform.position = transform.position
+            var position = transform.position
                 .AddY(yOffset)
                 .WithX(Random.Range(-_maxXOffset, _maxXOffset));
+            
+            var objectToSpawn = _spawnObjects.GetRandom();
+            var spawnedObject = GameContainer.InstantiateAndResolve(objectToSpawn, position, Quaternion.identity);
             
             spawnedObject.InitializeWithData(_data);
             spawnedObject.OnObjectDestroyed += OnObjectDestroyed;

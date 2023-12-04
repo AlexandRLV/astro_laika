@@ -20,6 +20,10 @@ namespace Startup.Common
             var soundsSystemPrefab = Resources.Load<SoundsSystem>("Services/SoundsSystem");
             var soundsSystem = GameContainer.InstantiateAndResolve(soundsSystemPrefab);
             GameContainer.Common.Register(soundsSystem);
+
+            var monoUpdaterGO = new GameObject("Mono Updater");
+            var monoUpdater = monoUpdaterGO.AddComponent<MonoUpdater>();
+            GameContainer.Common.Register(monoUpdater);
             
             return UniTask.CompletedTask;
         }

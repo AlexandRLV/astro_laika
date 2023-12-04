@@ -22,7 +22,9 @@ namespace Missions
         [Inject] private ObjectsSpawnerService _spawnerService;
         [Inject] private LevelScoresCounter _scoresCounter;
         [Inject] private PlayerController _player;
-        
+        [Inject] private MonoUpdater _monoUpdater;
+
+        private bool _isCompleted;
         private int _destroyedCount;
         private LevelObjectData _targetData;
         private ObjectsSpawnerBase _spawner;
@@ -38,6 +40,14 @@ namespace Missions
             _targetData = _levelObjectsStorage.FindDataForType(SpawnObjectsType);
             _spawner = _spawnerService.GetSpawnerForType(SpawnObjectsType);
             _spawner.StartSpawn(ObjectsCount, _targetData);
+
+            _monoUpdater.OnUpdate += OnUpdate;
+        }
+
+        private void OnUpdate()
+        {
+            if (_isCompleted)
+                _missionsController.CompleteStage(this);
         }
 
         private void OnLevelObjectDestroyed(ref LevelObjectDestroyedMessage message)
@@ -51,14 +61,16 @@ namespace Missions
             
             if (_destroyedCount < ObjectsCount)
                 return;
-            
-            _missionsController.CompleteStage(this);
+
+            _isCompleted = true;
         }
 
         public void Dispose()
         {
+            Debug.Log($"Disposing mission stage {SpawnObjectsType} with {ObjectsCount} objects");
             _messageBroker.Unsubscribe<LevelObjectDestroyedMessage>(OnLevelObjectDestroyed);
             _spawner.StopSpawn();
+            _monoUpdater.OnUpdate -= OnUpdate;
         }
     }
 }

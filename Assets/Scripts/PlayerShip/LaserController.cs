@@ -16,7 +16,6 @@ namespace Player
         [SerializeField] private Transform _firePoint;
         [SerializeField] private LineRenderer _lineRenderer;
         [SerializeField] private ParticleSystem _impactEffect;
-        [SerializeField] private Vector3 _impactEffectOffset;
 
         private bool _powerMode;
         private bool _isShooting;
@@ -36,10 +35,44 @@ namespace Player
 
         private void Update()
         {
-            _shootTimer -= Time.deltaTime;
-            if (_shootTimer > 0f && !_powerMode)
+            _shootTimer += Time.deltaTime;
+            
+            RaycastToTarget();
+            if (_targetObject == null)
+            {
+                UpdateLaserNoTarget();
+                return;
+            }
+            
+            if (_isShooting)
+            {
+                UpdateLaserPositions();
+                if (_shootTimer > _laserShowTime)
+                {
+                    _isShooting = false;
+                    DeactivateLaser();
+                    return;
+                }
+            }
+            
+            if (_shootTimer < _reloadTime)
                 return;
             
+            _shootTimer = 0f;
+            _isShooting = true;
+            ApplyDamage();
+            ActivateLaser();
+            UpdateLaserPositions();
+        }
+
+        public void RestoreLaset(float percent)
+        {
+            float timerRemoveValue = _reloadTime * percent;
+            _shootTimer -= timerRemoveValue;
+        }
+
+        private void RaycastToTarget()
+        {
             bool hitTriggers = Physics2D.queriesHitTriggers;
             Physics2D.queriesHitTriggers = true;
             var hit = Physics2D.Raycast(_firePoint.position, Vector2.up);
@@ -59,57 +92,46 @@ namespace Player
             
             _targetPoint = hit.point;
             _targetObject = hit.collider.gameObject;
-            _shootTimer = _reloadTime;
-            
-            ApplyDamage();
-            StartShoot();
         }
 
-        private void StartShoot()
+        private void UpdateLaserNoTarget()
         {
-            if (_shootCoroutine != null)
-                StopCoroutine(_shootCoroutine);
-            
-            _shootCoroutine = StartCoroutine(UseLaser(_laserShowTime));
+            if (!_isShooting)
+                return;
+                
+            if (_shootTimer > _laserShowTime)
+            {
+                _isShooting = false;
+                DeactivateLaser();
+            }
+            else
+            {
+                _targetPoint = _firePoint.position + Vector3.up * 100f;
+                UpdateLaserPositions();
+            }
         }
 
-        public void RestoreLaset(float percent)
+        private void UpdateLaserPositions()
         {
-            float timerRemoveValue = _reloadTime * percent;
-            _shootTimer -= timerRemoveValue;
-        }
-
-        private IEnumerator UseLaser(float shootTime)
-        {
-            _lineRenderer.enabled = true;
-            _impactEffect.Play();
-
             _linePoints[0] = _firePoint.position;
             _linePoints[1] = _targetPoint;
             _lineRenderer.SetPositions(_linePoints);
-
-            _impactEffect.transform.position = _targetPoint - _impactEffectOffset;
-            _impactEffect.transform.rotation = Quaternion.LookRotation(_firePoint.position);
-
-            float timer = 0f;
-            while (timer < shootTime)
-            {
-                timer += Time.deltaTime;
-                _linePoints[0] = _firePoint.position;
-                _linePoints[1] = _targetPoint;
-                _lineRenderer.SetPositions(_linePoints);
-                yield return null;
-            }
             
-            DeactivateLaser();
+            _impactEffect.transform.position = _targetPoint;
+            _impactEffect.transform.rotation = Quaternion.LookRotation(_firePoint.position);
         }
 
         private void ApplyDamage()
         {
-            Debug.Log($"Applying {_damage} damage");
             var damageable = _targetObject.GetComponentInParent<Damageable>();
             if (damageable != null)
                 damageable.Damage(_damage, DamageType.Laser);
+        }
+
+        private void ActivateLaser()
+        {
+            _lineRenderer.enabled = true;
+            _impactEffect.Play();
         }
         
         private void DeactivateLaser()

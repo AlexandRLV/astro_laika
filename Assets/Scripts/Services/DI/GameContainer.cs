@@ -61,6 +61,14 @@ namespace DI
             return spawnedObject;
         }
         
+        // Method for instantiating prefab and passing all [Inject] fields and methods in it
+        public static T InstantiateAndResolve<T>(T prefab, Vector3 position, Quaternion rotation) where T : MonoBehaviour
+        {
+            var spawnedObject = Object.Instantiate(prefab, position, rotation);
+            InjectToInstance(spawnedObject);
+            return spawnedObject;
+        }
+        
         // Method for instantiating prefab as child and passing all [Inject] fields and methods in it
         public static T InstantiateAndResolve<T>(T prefab, Transform parent) where T : MonoBehaviour
         {
