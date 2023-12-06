@@ -13,7 +13,6 @@ namespace Ui.Windows
         [SerializeField] private MainMenuShipPreview _preview;
         [SerializeField] private Button _playButton;
         [SerializeField] private Button _settingsButton;
-        [SerializeField] private Button _exitButton;
 
         [Inject] private GameInitializer _gameInitializer;
         
@@ -24,7 +23,6 @@ namespace Ui.Windows
             {
                 windowsSystem.CreateWindow<SettingsWindow>();
             });
-            _exitButton.onClick.AddListener(() => Application.Quit());
         }
 
         private void OnEnable()

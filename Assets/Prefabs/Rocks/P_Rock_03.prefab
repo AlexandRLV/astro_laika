@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5279113941932372021}
   - component: {fileID: 3788887342256682457}
   - component: {fileID: 8200128806023844583}
-  - component: {fileID: 7052244605559384773}
   m_Layer: 0
   m_Name: P_Rock_03
   m_TagString: Untagged
@@ -29,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1100702819137354}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 13.139704, y: 2.6057997, z: -1.5351715}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4219735780575896}
@@ -62,7 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7305431f6de2e6c45ac32f91d8280f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialHealth: 10
+  _initialHealth: 5
   _useShield: 0
   _initialShield: 0
 --- !u!114 &8200128806023844583
@@ -79,21 +78,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageable: {fileID: 3788887342256682457}
   _healthStatus: {fileID: 3133161655285066231}
---- !u!114 &7052244605559384773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1100702819137354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bea24a160974b519632c5ea7fe931ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rotateAxis: 0
-  _randomRotation: 1
-  _speed: 3
 --- !u!1 &1241173126109006
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,6 +90,7 @@ GameObject:
   - component: {fileID: 33878386828039644}
   - component: {fileID: 23532771467981620}
   - component: {fileID: 6401755247662190703}
+  - component: {fileID: 7288379964855387151}
   m_Layer: 0
   m_Name: Rock_03
   m_TagString: Untagged
@@ -121,7 +106,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241173126109006}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -0.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -204,6 +189,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4337, y: 0.6462}
   m_EdgeRadius: 0
+--- !u!114 &7288379964855387151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241173126109006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bea24a160974b519632c5ea7fe931ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotateAxis: 0
+  _randomRotation: 1
+  _speed: 60
 --- !u!1001 &5304977873045201077
 PrefabInstance:
   m_ObjectHideFlags: 0
