@@ -396,31 +396,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5765516499966582977, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.86
+      value: 12.876953
       objectReference: {fileID: 0}
     - target: {fileID: 5765516499966582977, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.94
+      value: 12.997079
       objectReference: {fileID: 0}
     - target: {fileID: 5765516499966582977, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -12.53
+      value: -12.657257
       objectReference: {fileID: 0}
     - target: {fileID: 5765516499966582977, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8039149
+      value: 0.70311606
       objectReference: {fileID: 0}
     - target: {fileID: 5765516499966582977, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.28967938
+      value: -0.46083567
       objectReference: {fileID: 0}
     - target: {fileID: 5765516499966582977, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.50823045
+      value: 0.36033708
       objectReference: {fileID: 0}
     - target: {fileID: 5765516499966582977, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.107277595
+      value: -0.4042468
       objectReference: {fileID: 0}
     - target: {fileID: 5765516499966582977, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -432,11 +432,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5765516499966582977, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -29.988
+      value: -74.578
       objectReference: {fileID: 0}
     - target: {fileID: 6314806470889146047, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
       propertyPath: m_Name
       value: Space Ship
+      objectReference: {fileID: 0}
+    - target: {fileID: 7318794158142061455, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c64130b7cf2f4049b359f1b256bd972, type: 3}
