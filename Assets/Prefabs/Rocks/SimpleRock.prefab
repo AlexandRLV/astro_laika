@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 5669877736875948935}
   - component: {fileID: 4398566210183077209}
   - component: {fileID: 7331137472862792299}
+  - component: {fileID: 6822943162833630605}
   m_Layer: 0
   m_Name: SimpleRock
   m_TagString: Untagged
@@ -205,6 +206,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5455662, y: 0.6829983}
   m_EdgeRadius: 0
+--- !u!50 &6822943162833630605
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7740953121990719176}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1001 &8643561501865700501
 PrefabInstance:
   m_ObjectHideFlags: 0

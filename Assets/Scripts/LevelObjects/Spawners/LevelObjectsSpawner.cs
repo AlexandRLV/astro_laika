@@ -7,10 +7,6 @@ namespace LevelObjects
 {
     public class LevelObjectsSpawner : ObjectsSpawnerBase
     {
-        [Header("First object")]
-        [SerializeField] private bool _spawnFirstObject;
-        [SerializeField] private float _firstObjectYOffset;
-        
         [Header("Objects spawn")]
         [SerializeField] private int _maxActiveObjects;
         [SerializeField] private Vector2 _minMaxTimeToSpawn;
@@ -23,27 +19,43 @@ namespace LevelObjects
         private int _remainingCount;
         private LevelObjectData _data;
         private List<LevelDestroyableObject> _spawnedObjects;
+        private Queue<LevelDestroyableObject> _preparedObjects;
+
+        private void Awake()
+        {
+            _spawnedObjects = new List<LevelDestroyableObject>();
+            _preparedObjects = new Queue<LevelDestroyableObject>();
+            SetTimeToSpawn();
+        }
 
         public override void StartSpawn(int count, LevelObjectData data)
         {
             _remainingCount = count;
             _canSpawn = true;
             _data = data;
+
+            for (int i = 0; i < count; i++)
+            {
+                var position = transform.position
+                    .WithX(Random.Range(-_maxXOffset, _maxXOffset));
+            
+                var objectToSpawn = _spawnObjects.GetRandom();
+                var spawnedObject = GameContainer.InstantiateAndResolve(objectToSpawn, position, Quaternion.identity);
+            
+                spawnedObject.InitializeWithData(_data);
+                spawnedObject.gameObject.SetActive(false);
+                _preparedObjects.Enqueue(spawnedObject);
+            }
         }
 
         public override void StopSpawn()
         {
             _remainingCount = 0;
             _canSpawn = false;
-        }
-
-        private void Awake()
-        {
-            _spawnedObjects = new List<LevelDestroyableObject>();
-            SetTimeToSpawn();
-            
-            if (_spawnFirstObject)
-                SpawnRandomObject(_firstObjectYOffset);
+            while (_preparedObjects.TryDequeue(out var spawnedObject))
+            {
+                Destroy(spawnedObject.gameObject);
+            }
         }
 
         private void OnDestroy()
@@ -75,8 +87,9 @@ namespace LevelObjects
                 var spawnedObject = _spawnedObjects[i];
                 if (spawnedObject.transform.position.y > _yToDespawn) continue;
 
+                spawnedObject.gameObject.SetActive(false);
                 spawnedObject.OnObjectDestroyed -= OnObjectDestroyed;
-                Destroy(spawnedObject);
+                _preparedObjects.Enqueue(spawnedObject);
                 _spawnedObjects.RemoveAt(i);
             }
         }
@@ -86,18 +99,15 @@ namespace LevelObjects
             _timer = Random.Range(_minMaxTimeToSpawn.x, _minMaxTimeToSpawn.y);
         }
 
-        private void SpawnRandomObject(float yOffset = 0f)
+        private void SpawnRandomObject()
         {
             var position = transform.position
-                .AddY(yOffset)
                 .WithX(Random.Range(-_maxXOffset, _maxXOffset));
-            
-            var objectToSpawn = _spawnObjects.GetRandom();
-            var spawnedObject = GameContainer.InstantiateAndResolve(objectToSpawn, position, Quaternion.identity);
-            
-            spawnedObject.InitializeWithData(_data);
+
+            var spawnedObject = _preparedObjects.Dequeue();
+            spawnedObject.transform.position = position;
+            spawnedObject.gameObject.SetActive(true);
             spawnedObject.OnObjectDestroyed += OnObjectDestroyed;
-            
             _spawnedObjects.Add(spawnedObject);
         }
 

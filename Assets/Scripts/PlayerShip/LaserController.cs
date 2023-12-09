@@ -11,6 +11,7 @@ namespace Player
         [SerializeField] private float _reloadTime;
         [SerializeField] private float _laserShowTime;
         [SerializeField] private float _maxY;
+        [SerializeField] private LayerMask _shootMask;
         
         [Header("References")]
         [SerializeField] private Transform _firePoint;
@@ -24,8 +25,6 @@ namespace Player
         private GameObject _targetObject;
         private Vector3 _targetPoint;
         private Vector3[] _linePoints;
-
-        private Coroutine _shootCoroutine;
 
         private void Start()
         {
@@ -75,7 +74,7 @@ namespace Player
         {
             bool hitTriggers = Physics2D.queriesHitTriggers;
             Physics2D.queriesHitTriggers = true;
-            var hit = Physics2D.Raycast(_firePoint.position, Vector2.up);
+            var hit = Physics2D.Raycast(_firePoint.position, Vector2.up, 10f, _shootMask);
             Physics2D.queriesHitTriggers = hitTriggers;
             
             if (hit.collider == null)

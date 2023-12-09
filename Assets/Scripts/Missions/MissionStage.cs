@@ -58,6 +58,8 @@ namespace Missions
             _destroyedCount++;
             if (message.DamageType != DamageType.Collision)
                 _scoresCounter.AddScores(_targetData.ScoresForDestroy);
+            else
+                _scoresCounter.TakeScores(_targetData.ScoresPenaltyOnCollision);
             
             if (_destroyedCount < ObjectsCount)
                 return;

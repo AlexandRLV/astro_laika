@@ -18,23 +18,13 @@ public class EnemyMoveController : MonoBehaviour
     [SerializeField] private Vector3 _moveZoneSize;
 
     [Header("Components")]
-    [SerializeField] private HealthStatus _healthStatus;
-    [SerializeField] private Damageable _enemyDamageable;
     [SerializeField] private EnemyShootController _shootController;
     
-    private EnemyShipsWaveManager _waveManager;
-    private LevelObjectData _enemyData;
-
-    public void Init(Vector3 moveZoneCenter, Vector3 moveZoneSize, EnemyShipsWaveManager waveManager, LevelObjectData enemyData)
+    public void Init(Vector3 moveZoneCenter, Vector3 moveZoneSize, LevelObjectData enemyData)
     {
         _moveZoneCenter = moveZoneCenter;
         _moveZoneSize = moveZoneSize;
-        _waveManager = waveManager;
-        _enemyData = enemyData;
         _shootController.Initialize(enemyData);
-        
-        _enemyDamageable.Initialize(_healthStatus);
-        _enemyDamageable.OnDestroyed += OnDestroyed;
 
         movePoint = EnemyExtentions.CalculateNewMovePoint(_moveZoneCenter, _moveZoneSize);
     }
@@ -55,12 +45,6 @@ public class EnemyMoveController : MonoBehaviour
             movePoint = EnemyExtentions.CalculateNewMovePoint(
                 _moveZoneCenter, _moveZoneSize);
         }
-    }
-
-    private void OnDestroyed(DamageType damageType)
-    {
-        _waveManager.EnemyDestroyed(this);
-        _enemyDamageable.OnDestroyed -= OnDestroyed;
     }
 
 #if UNITY_EDITOR

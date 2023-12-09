@@ -52,13 +52,6 @@ public class EnemyShipsWaveManager : ObjectsSpawnerBase
         _remainingCount = 0;
     }
 
-    public void EnemyDestroyed(EnemyMoveController enemy)
-    {
-        _spawnedEnemies.Remove(enemy);
-        _remainingCount--;
-        _enemiesAlive--;
-    }
-
     private void Update()
     {
         if (!_canSpawn || _remainingCount <= 0)
@@ -93,10 +86,23 @@ public class EnemyShipsWaveManager : ObjectsSpawnerBase
     private void SpawnEnemy(EnemyMoveController enemy)
     {
         int i = Mathf.RoundToInt(Random.Range(0, _spawnPoints.Length));
-        _enemiesAlive++;
         var newEnemy = Instantiate(enemy, _spawnPoints[i].position, enemy.transform.rotation);
-        newEnemy.Init(EnemyMoveZoneCenter, EnemyMoveZoneSize, this, _enemyData);
+        newEnemy.Init(EnemyMoveZoneCenter, EnemyMoveZoneSize, _enemyData);
         _spawnedEnemies.Add(newEnemy);
+        _enemiesAlive++;
+        
+        var enemyLevelObject = newEnemy.GetComponent<LevelDestroyableObject>();
+        enemyLevelObject.InitializeWithData(_enemyData);
+        enemyLevelObject.OnObjectDestroyed += OnEnemyDestroyed;
+    }
+
+    private void OnEnemyDestroyed(LevelDestroyableObject enemyObject)
+    {
+        enemyObject.OnObjectDestroyed -= OnEnemyDestroyed;
+        var moveController = enemyObject.GetComponent<EnemyMoveController>();
+        _spawnedEnemies.Remove(moveController);
+        _remainingCount--;
+        _enemiesAlive--;
     }
 
     private IEnumerator SpawnWave(int waveIndex)

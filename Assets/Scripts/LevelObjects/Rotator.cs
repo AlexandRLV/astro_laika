@@ -15,8 +15,8 @@ namespace Environment
         {
             UpdateRotateVector();
             
-            float angle = Random.Range(0f, 360f);
-            transform.Rotate(_rotateVector, angle);
+            // float angle = Random.Range(0f, 360f);
+            // transform.Rotate(_rotateVector, angle);
         }
 
         private void Update()
@@ -26,8 +26,8 @@ namespace Environment
                 UpdateRotateVector();
 #endif
             
-            float angle = _speed * Time.deltaTime;
-            transform.Rotate(_rotateVector, angle);
+            // float angle = _speed * Time.deltaTime;
+            // transform.Rotate(_rotateVector, angle);
         }
 
         private void UpdateRotateVector()

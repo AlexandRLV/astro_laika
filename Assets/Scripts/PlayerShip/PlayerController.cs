@@ -1,5 +1,6 @@
 ﻿using Damage;
 using DI;
+using LevelObjects;
 using LevelObjects.Messages;
 using Services;
 using Services.WindowsSystem;
@@ -35,6 +36,15 @@ namespace Player
             
             _laser.RestoreLaset(message.Data.LaserPercentBonusForDestroy);
             _playerDamageable.RepairShield(message.Data.ShieldPercentBonusForDestroy);
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            var levelObject = other.collider.GetComponentInParent<LevelDestroyableObject>();
+            if (levelObject == null)
+                return;
+            
+            _playerDamageable.Damage(levelObject.Data.CollisionToPlayerDamagePercent * _playerDamageable.InitialiHp, DamageType.Collision);
         }
     }
 }

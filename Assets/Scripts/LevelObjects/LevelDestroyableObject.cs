@@ -2,6 +2,7 @@
 using Damage;
 using DI;
 using LevelObjects.Messages;
+using Player;
 using Services;
 using UnityEngine;
 
@@ -10,13 +11,12 @@ namespace LevelObjects
     public class LevelDestroyableObject : MonoBehaviour
     {
         public event Action<LevelDestroyableObject> OnObjectDestroyed;
+        public LevelObjectData Data { get; private set; }
         
         [SerializeField] private Damageable _damageable;
         [SerializeField] private HealthStatus _healthStatus;
 
         [Inject] private MessageBroker _messageBroker;
-
-        private LevelObjectData _data;
         
         private void Start()
         {
@@ -26,7 +26,7 @@ namespace LevelObjects
 
         public void InitializeWithData(LevelObjectData data)
         {
-            _data = data;
+            Data = data;
         }
 
         private void OnDestroyed(DamageType damageType)
@@ -37,9 +37,18 @@ namespace LevelObjects
             var message = new LevelObjectDestroyedMessage
             {
                 DamageType = damageType,
-                Data = _data,
+                Data = Data,
             };
             _messageBroker.Trigger(ref message);
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            var player = other.collider.GetComponentInParent<PlayerController>();
+            if (player == null)
+                return;
+            
+            _damageable.Destruct(DamageType.Collision);
         }
     }
 }
