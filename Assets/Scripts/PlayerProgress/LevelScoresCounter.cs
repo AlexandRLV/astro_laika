@@ -11,9 +11,9 @@ namespace PlayerProgress
         public int CurrentScores { get; private set; }
 
         [Construct]
-        public LevelScoresCounter(WindowsSystem _windowsSystem)
+        public LevelScoresCounter(WindowsSystem windowsSystem)
         {
-            _windowsSystem.TryGetWindow(out _inGameUI);
+            windowsSystem.TryGetWindow(out _inGameUI);
         }
 
         public void AddScores(int amount)

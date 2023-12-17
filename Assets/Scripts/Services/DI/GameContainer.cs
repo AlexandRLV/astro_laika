@@ -12,7 +12,7 @@ namespace DI
         public static Container Common;
         public static Container InGame;
 
-        public static void InjectToInstance<T>(T instance) where T : class
+        public static void InjectToInstance<T>(T instance)
         {
             var type = typeof(T);
             
@@ -31,7 +31,7 @@ namespace DI
             if (constructor == null)
             {
                 var instance = Activator.CreateInstance<T>();
-                InjectToInstance((object)instance);
+                InjectToInstance<T>(instance);
                 return instance;
             }
 

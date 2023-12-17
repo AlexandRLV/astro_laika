@@ -1,10 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using DI;
-using Services.SoundsSystem;
-using Services.WindowsSystem;
 using Startup.Common;
-using Startup.InGame;
-using Ui.Windows;
+using Startup.GameStateMachine;
 using UnityEngine;
 
 namespace Startup
@@ -16,16 +13,8 @@ namespace Startup
             new ServicesInitializer(),
             new UiInitializer(),
         };
-
-        private readonly InitializerBase[] _inGameInitializers =
-        {
-            new GameMapInitializer(),
-            new PlayerInitializer(),
-            new MissionsInitializer(),
-        };
-
-        [Inject] private SoundsSystem _soundsSystem;
-        [Inject] private WindowsSystem _windowsSystem;
+        
+        private GameStateMachine.GameStateMachine _gameStateMachine;
         
         private void Awake()
         {
@@ -35,25 +24,13 @@ namespace Startup
         public async UniTask StartGame()
         {
             GameContainer.InGame = new Container();
-            foreach (var initializer in _inGameInitializers)
-            {
-                await initializer.Initialize();
-            }
-            
-            _soundsSystem.PlayMusic(MusicType.InGame);
+            await _gameStateMachine.SwitchToState(GameStateType.Play);
         }
 
         public async UniTask BackToMenu()
         {
-            foreach (var initializer in _inGameInitializers)
-            {
-                await initializer.Dispose();
-            }
             GameContainer.InGame = null;
-            
-            _soundsSystem.PlayMusic(MusicType.MainMenu);
-            _windowsSystem.TryGetWindow<MainMenuWindow>(out var mainMenu);
-            mainMenu.gameObject.SetActive(true);
+            await _gameStateMachine.SwitchToState(GameStateType.MainMenu);
         }
 
         private async UniTask Initialize()
@@ -64,9 +41,9 @@ namespace Startup
             {
                 await initializer.Initialize();
             }
-            
-            GameContainer.InjectToInstance(this);
-            _soundsSystem.PlayMusic(MusicType.MainMenu);
+
+            _gameStateMachine = new GameStateMachine.GameStateMachine();
+            await _gameStateMachine.SwitchToState(GameStateType.MainMenu, force: true);
         }
     }
 }

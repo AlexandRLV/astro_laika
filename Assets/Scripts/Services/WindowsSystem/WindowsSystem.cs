@@ -8,16 +8,14 @@ namespace Services.WindowsSystem
 {
     public class WindowsSystem
     {
-        private GameWindows _gameWindows;
-        private UiRoot _uiRoot;
+        private readonly UiRoot _uiRoot;
 
-        private Dictionary<Type, WindowBase> _windowsPrefabs;
-        private Dictionary<Type, WindowBase> _loadedWindows;
+        private readonly Dictionary<Type, WindowBase> _windowsPrefabs;
+        private readonly Dictionary<Type, WindowBase> _loadedWindows;
 
         [Construct]
         public WindowsSystem(GameWindows gameWindows, UiRoot uiRoot)
         {
-            _gameWindows = gameWindows;
             _uiRoot = uiRoot;
             _windowsPrefabs = new Dictionary<Type, WindowBase>();
             _loadedWindows = new Dictionary<Type, WindowBase>();
@@ -25,7 +23,7 @@ namespace Services.WindowsSystem
             if (gameWindows.Windows == null)
                 return;
 
-            foreach (var window in _gameWindows.Windows)
+            foreach (var window in gameWindows.Windows)
             {
                 _windowsPrefabs.Add(window.GetType(), window);
             }
