@@ -17,6 +17,12 @@ namespace Startup
             Initialize().Forget();
         }
 
+        public async UniTask RestartCurrentGame()
+        {
+            await BackToMenu();
+            await StartGame();
+        }
+
         public async UniTask StartGame()
         {
             await _gameStateMachine.SwitchToState(GameStateType.Play);

@@ -1,4 +1,5 @@
 using Damage;
+using Player.NewPlayer;
 using UnityEngine;
 
 namespace Player
@@ -9,13 +10,13 @@ namespace Player
         [SerializeField] private float _damage;
         [SerializeField] private float _reloadTime;
         [SerializeField] private float _laserShowTime;
-        [SerializeField] private float _maxY;
         [SerializeField] private LayerMask _shootMask;
         
         [Header("References")]
         [SerializeField] private Transform _firePoint;
         [SerializeField] private LineRenderer _lineRenderer;
         [SerializeField] private ParticleSystem _impactEffect;
+        [SerializeField] private MovingBorders _borders;
 
         private bool _powerMode;
         private bool _isShooting;
@@ -82,7 +83,7 @@ namespace Player
                 return;
             }
 
-            if (hit.point.y > _maxY)
+            if (hit.point.y > _borders.MaxY)
             {
                 _targetObject = null;
                 return;

@@ -12,13 +12,15 @@ namespace Ui.Windows.Extra
         
         [SerializeField] private TextMeshProUGUI _levelText;
         [SerializeField] private Button _button;
-        [SerializeField] private GameObject _completedIndicator;
-        [SerializeField] private GameObject _notCompletedIndicator;
+        [SerializeField] private GameObject _completedBg;
+        [SerializeField] private GameObject _notCompletedBg;
 
         public void Initialize(LevelInfo levelInfo, bool completed)
         {
             _levelText.text = levelInfo.LevelName;
-            _button.onClick.AddListener(() => OnPressed?.Invoke(levelInfo));   
+            _button.onClick.AddListener(() => OnPressed?.Invoke(levelInfo));
+            _completedBg.SetActive(completed);
+            _notCompletedBg.SetActive(!completed);
         }
     }
 }

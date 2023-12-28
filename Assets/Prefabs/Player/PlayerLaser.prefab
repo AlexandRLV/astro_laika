@@ -9764,10 +9764,13 @@ MonoBehaviour:
   _damage: 1
   _reloadTime: 0.5
   _laserShowTime: 0.2
+  _shootMask:
+    serializedVersion: 2
+    m_Bits: 0
   _firePoint: {fileID: 8137401146663401051}
   _lineRenderer: {fileID: 3340805429177967044}
   _impactEffect: {fileID: 3758745499343403471}
-  _impactEffectOffset: {x: 0, y: 0, z: 0}
+  _borders: {fileID: 11400000, guid: ce2419c8c44c62145a16fc7f64e5288f, type: 2}
 --- !u!1 &8706828544479153811
 GameObject:
   m_ObjectHideFlags: 0
