@@ -1,6 +1,8 @@
 using DI;
 using Player;
 using Services;
+using Services.WindowsSystem;
+using Ui.Windows;
 using UnityEngine;
 
 namespace Startup.InGame
@@ -18,10 +20,18 @@ namespace Startup.InGame
             GameContainer.InGame.Register(_player);
             
             _player.transform.position = _playerSpawn.position;
+            _player.OnDestroyed += OnPlayerDestroyed;
+        }
+
+        private void OnPlayerDestroyed()
+        {
+            var windowsSystem = GameContainer.Common.Resolve<WindowsSystem>();
+            windowsSystem.CreateWindow<MissionFailedWindow>();
         }
 
         public override void Dispose()
         {
+            _player.OnDestroyed -= OnPlayerDestroyed;
             Destroy(_player.gameObject);
         }
     }

@@ -1,4 +1,5 @@
-﻿using Damage;
+﻿using System;
+using Damage;
 using DI;
 using LevelObjects;
 using LevelObjects.Messages;
@@ -11,6 +12,8 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
+        public event Action OnDestroyed;
+        
         [SerializeField] private Damageable _playerDamageable;
         [SerializeField] private LaserController _laser;
 
@@ -21,7 +24,13 @@ namespace Player
         {
             _windowsSystem.TryGetWindow(out InGameUI window);
             _playerDamageable.Initialize(window.PlayerHealthStatus);
+            _playerDamageable.OnDestroyed += OnPlayerDestroyed;
             _messageBroker.Subscribe<LevelObjectDestroyedMessage>(OnLevelObjectDestroyed);
+        }
+
+        private void OnPlayerDestroyed(DamageType obj)
+        {
+            OnDestroyed?.Invoke();
         }
 
         private void OnDestroy()
