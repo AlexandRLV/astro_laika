@@ -1,6 +1,7 @@
-﻿using Cysharp.Threading.Tasks;
-using DI;
+﻿using DI;
 using GameSettings;
+using PlayerProgress;
+using PlayerShips;
 using Services;
 using Services.SoundsSystem;
 using UnityEngine;
@@ -9,7 +10,9 @@ namespace Startup.Common
 {
     public class ServicesInitializer : InitializerBase
     {
-        public override UniTask Initialize()
+        [SerializeField] private PlayerShipsData _playerShipsData;
+        
+        public override void Initialize()
         {
             var messageBroker = new MessageBroker();
             GameContainer.Common.Register(messageBroker);
@@ -24,8 +27,19 @@ namespace Startup.Common
             var monoUpdaterGO = new GameObject("Mono Updater");
             var monoUpdater = monoUpdaterGO.AddComponent<MonoUpdater>();
             GameContainer.Common.Register(monoUpdater);
-            
-            return UniTask.CompletedTask;
+
+            var gameInfoContainer = GameContainer.Create<GameInfoContainer>();
+            GameContainer.Common.Register(gameInfoContainer);
+
+            var progressManager = GameContainer.Create<PlayerProgressManager>();
+            progressManager.LoadProgress();
+            GameContainer.Common.Register(progressManager);
+
+            if (!progressManager.Data.BoughtShips.Contains(progressManager.Data.SelectedShip) || progressManager.Data.SelectedShip >= _playerShipsData.PlayerShips.Length - 1)
+                progressManager.Data.SelectedShip = 0;
+
+            gameInfoContainer.CurrentShip = _playerShipsData.PlayerShips[progressManager.Data.SelectedShip];
+            GameContainer.Common.Register(_playerShipsData);
         }
     }
 }

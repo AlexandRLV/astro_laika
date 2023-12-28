@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8738b2dd6d946e1a438abe13f682120, type: 3}
+  m_Name: Player Ships Data
+  m_EditorClassIdentifier: 
+  PlayerShips:
+  - Name: Rookie Spacecraft
+    PreviewPrefab: {fileID: 785122714064240469, guid: adc601048d83ca84d8d1a90f1693b735, type: 3}
+    GamePrefab: {fileID: 1220295665019064088, guid: cbd98651f10fb9440bd46ad71b9043dd, type: 3}
+    Cost: 0
+  - Name: SpaceWalker
+    PreviewPrefab: {fileID: 785122714064240469, guid: 9f39251a0a645694e887e98e71cab47c, type: 3}
+    GamePrefab: {fileID: 1220295665019064088, guid: 5ab7dbff1953b544eb4c6c6ea169ba96, type: 3}
+    Cost: 100

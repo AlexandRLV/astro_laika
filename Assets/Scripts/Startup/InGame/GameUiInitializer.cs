@@ -1,12 +1,10 @@
 ﻿using DI;
-using LevelObjects;
 using Services.WindowsSystem;
 using Ui.Windows;
-using UnityEngine;
 
 namespace Startup.InGame
 {
-    public class GameUiInitializer : LevelInitializerBase
+    public class GameUiInitializer : InitializerBase
     {
         public override void Initialize()
         {

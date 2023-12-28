@@ -1,10 +1,17 @@
 ﻿using System.Collections.Generic;
+using DI;
+using Services.WindowsSystem;
+using Ui.Windows;
 using UnityEngine;
 
 namespace Missions
 {
     public class MissionsController
     {
+        public bool MissionCompleted { get; private set; }
+        
+        [Inject] private WindowsSystem _windowsSystem;
+        
         private MissionData _data;
         private MissionStage _currentStage;
         private Queue<MissionStage> _stages;
@@ -63,7 +70,8 @@ namespace Missions
 
         private void CompleteMission()
         {
-            
+            MissionCompleted = true;
+            _windowsSystem.CreateWindow<MissionCompletedWindow>();
         }
     }
 }

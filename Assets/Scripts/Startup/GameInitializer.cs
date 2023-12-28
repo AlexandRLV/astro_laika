@@ -1,18 +1,14 @@
 ﻿using Cysharp.Threading.Tasks;
 using DI;
-using Startup.Common;
 using Startup.GameStateMachine;
 using UnityEngine;
+using GameContainer = DI.GameContainer;
 
 namespace Startup
 {
     public class GameInitializer : MonoBehaviour
     {
-        private readonly InitializerBase[] _commonInitializers =
-        {
-            new ServicesInitializer(),
-            new UiInitializer(),
-        };
+        [SerializeField] private InitializerBase[] _commonInitializers;
         
         private GameStateMachine.GameStateMachine _gameStateMachine;
         
@@ -38,9 +34,9 @@ namespace Startup
             GameContainer.Common.Register(this);
             foreach (var initializer in _commonInitializers)
             {
-                await initializer.Initialize();
+                initializer.Initialize();
             }
-
+            
             _gameStateMachine = new GameStateMachine.GameStateMachine();
             await _gameStateMachine.SwitchToState(GameStateType.MainMenu, force: true);
         }

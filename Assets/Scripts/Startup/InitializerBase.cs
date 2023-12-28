@@ -1,10 +1,10 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using UnityEngine;
 
 namespace Startup
 {
-    public abstract class InitializerBase
+    public abstract class InitializerBase : MonoBehaviour
     {
-        public abstract UniTask Initialize();
-        public virtual UniTask Dispose() => UniTask.CompletedTask;
+        public abstract void Initialize();
+        public virtual void Dispose() { }
     }
 }

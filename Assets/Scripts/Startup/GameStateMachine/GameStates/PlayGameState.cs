@@ -1,35 +1,34 @@
 ﻿using Cysharp.Threading.Tasks;
 using DI;
+using Services;
 using Services.SoundsSystem;
+using Ui;
 using UnityEngine.SceneManagement;
 
 namespace Startup.GameStateMachine.GameStates
 {
     public class PlayGameState : IGameState
     {
-        private const string SceneToLoad = "Level01";
-        
         [Inject] private SoundsSystem _soundsSystem;
+        [Inject] private GameInfoContainer _gameInfoContainer;
+        [Inject] private LoadingScreen _loadingScreen;
+
+        private string _loadedScene;
 
         public async UniTask OnEnter()
         {
-            // foreach (var initializer in _initializers)
-            // {
-            //     await initializer.Initialize();
-            // }
+            _loadingScreen.Active = true;
             
-            await SceneManager.LoadSceneAsync(SceneToLoad, LoadSceneMode.Additive);
-            _soundsSystem.PlayMusic(MusicType.InGame);
+            _loadedScene = _gameInfoContainer.CurrentLevel.SceneToLoad;
+            await SceneManager.LoadSceneAsync(_loadedScene, LoadSceneMode.Additive);
+            _soundsSystem.PlayMusic(_gameInfoContainer.CurrentLevel.LevelMusic);
+            
+            _loadingScreen.Active = false;
         }
 
         public async UniTask OnExit()
         {
-            // foreach (var initializer in _initializers)
-            // {
-            //     await initializer.Dispose();
-            // }
-            
-            await SceneManager.UnloadSceneAsync(SceneToLoad);
+            await SceneManager.UnloadSceneAsync(_loadedScene);
         }
     }
 }

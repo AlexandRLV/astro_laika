@@ -1,26 +1,28 @@
 using DI;
 using Player;
+using Services;
 using UnityEngine;
 
 namespace Startup.InGame
 {
-    public class PlayerInitializer : LevelInitializerBase
+    public class PlayerInitializer : InitializerBase
     {
         [SerializeField] private Transform _playerSpawn;
+
+        private PlayerController _player;
         
         public override void Initialize()
         {
-            var playerPrefab = Resources.Load<PlayerController>("Prefabs/Player");
-            var player = GameContainer.InstantiateAndResolve(playerPrefab);
-            GameContainer.InGame.Register(player);
+            var gameInfoContainer = GameContainer.Common.Resolve<GameInfoContainer>();
+            _player = GameContainer.InstantiateAndResolve(gameInfoContainer.CurrentShip.GamePrefab);
+            GameContainer.InGame.Register(_player);
             
-            player.transform.position = _playerSpawn.position;
+            _player.transform.position = _playerSpawn.position;
         }
 
         public override void Dispose()
         {
-            var player = GameContainer.InGame.Resolve<PlayerController>();
-            Destroy(player.gameObject);
+            Destroy(_player.gameObject);
         }
     }
 }

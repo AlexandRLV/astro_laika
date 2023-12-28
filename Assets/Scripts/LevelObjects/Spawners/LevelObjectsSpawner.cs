@@ -102,11 +102,11 @@ namespace LevelObjects
 
         private void SpawnRandomObject()
         {
-            var position = transform.position
-                .WithX(Random.Range(-_maxXOffset, _maxXOffset));
-
+            if (_preparedObjects.Count == 0) return;
+            
             var spawnedObject = _preparedObjects.Dequeue();
-            spawnedObject.transform.position = position;
+            spawnedObject.transform.position = transform.position
+                .WithX(Random.Range(-_maxXOffset, _maxXOffset));;
             spawnedObject.gameObject.SetActive(true);
             spawnedObject.OnObjectDestroyed += OnObjectDestroyed;
             _spawnedObjects.Add(spawnedObject);

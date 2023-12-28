@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125e33edff154349b8bc51342822a0b1, type: 3}
+  m_Name: Game Levels Data
+  m_EditorClassIdentifier: 
+  Levels:
+  - LevelName: Leaving Earth
+    SceneToLoad: Level01
+    LevelMusic: {fileID: 8300000, guid: f57ded4dfb59d4513b4af73b7ff4a9af, type: 3}
+    LevelMission: {fileID: 11400000, guid: 5eed1bab00816044abb77a9926949e6e, type: 2}
+  - LevelName: Space Travel
+    SceneToLoad: Level01
+    LevelMusic: {fileID: 8300000, guid: 77e14a044efb3484995cb7faefc6d63d, type: 3}
+    LevelMission: {fileID: 11400000, guid: e6bdc4926fd690747b52b94f0da772d3, type: 2}
+  - LevelName: Meeting New Friends
+    SceneToLoad: Level01
+    LevelMusic: {fileID: 8300000, guid: 91d160b8697c84c2e9ae7c8ee81089cc, type: 3}
+    LevelMission: {fileID: 11400000, guid: 645f1448849130f449beb96c41eea68b, type: 2}

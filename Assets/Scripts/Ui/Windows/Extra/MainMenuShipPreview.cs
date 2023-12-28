@@ -19,6 +19,16 @@ namespace Ui.Windows.Extra
         private Coroutine _moveRoutine;
         private Action _callback;
 
+        private GameObject _currentShip;
+        
+        public void SpawnShip(GameObject ship)
+        {
+            if (_currentShip != null)
+                Destroy(_currentShip);
+
+            _currentShip = Instantiate(ship, _ship);
+        }
+
         public void Enter(Action callback = null)
         {
             if (_moveRoutine != null)

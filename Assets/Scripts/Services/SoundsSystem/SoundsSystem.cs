@@ -60,6 +60,11 @@ namespace Services.SoundsSystem
         public void PlayMusic(MusicType musicType, bool fade = true)
         {
             var clip = _music[musicType];
+            PlayMusic(clip, fade);
+        }
+
+        public void PlayMusic(AudioClip clip, bool fade = true)
+        {
             if (_firstMusicSource.isPlaying && fade)
             {
                 FadeToMusic(clip);
