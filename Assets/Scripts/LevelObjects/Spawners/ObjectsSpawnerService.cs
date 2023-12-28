@@ -15,6 +15,14 @@ namespace LevelObjects
 
         [SerializeField] private List<SpawnerContainer> _spawners;
 
+        public void Initialize()
+        {
+            foreach (var spawner in _spawners)
+            {
+                spawner.Spawner.Initialize();
+            }
+        }
+
         public ObjectsSpawnerBase GetSpawnerForType(LevelObjectType type)
         {
             foreach (var spawner in _spawners)

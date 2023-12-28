@@ -33,7 +33,7 @@ public class EnemyShipsWaveManager : ObjectsSpawnerBase
     private LevelObjectData _enemyData;
     private List<EnemyMoveController> _spawnedEnemies;
 
-    private void Awake()
+    public override void Initialize()
     {
         _spawnedEnemies = new List<EnemyMoveController>();
     }
@@ -76,10 +76,14 @@ public class EnemyShipsWaveManager : ObjectsSpawnerBase
     private void OnDestroy()
     {
         StopAllCoroutines();
+        if (_spawnedEnemies is not { Count: > 0 })
+            return;
+        
         foreach (var spawnedEnemy in _spawnedEnemies)
         {
             Destroy(spawnedEnemy.gameObject);
         }
+
         _spawnedEnemies.Clear();
     }
 

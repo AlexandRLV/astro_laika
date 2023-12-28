@@ -23,7 +23,6 @@ namespace Startup
 
         public async UniTask StartGame()
         {
-            GameContainer.InGame = new Container();
             await _gameStateMachine.SwitchToState(GameStateType.Play);
         }
 

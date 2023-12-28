@@ -1,15 +1,23 @@
-﻿using Cysharp.Threading.Tasks;
-using DI;
+﻿using DI;
+using LevelObjects;
 using Missions;
 using PlayerProgress;
 using UnityEngine;
 
 namespace Startup.InGame
 {
-    public class MissionsInitializer : InitializerBase
+    public class MissionsInitializer : LevelInitializerBase
     {
-        public override UniTask Initialize()
+        [SerializeField] private LevelObjectsStorage _levelObjectsStorage;
+        [SerializeField] private ObjectsSpawnerService _objectsSpawnerService;
+        
+        public override void Initialize()
         {
+            GameContainer.InGame.Register(_levelObjectsStorage);
+            GameContainer.InGame.Register(_objectsSpawnerService);
+            
+            _objectsSpawnerService.Initialize();
+            
             var scoresCounter = GameContainer.Create<LevelScoresCounter>();
             GameContainer.InGame.Register(scoresCounter);
             
@@ -18,8 +26,6 @@ namespace Startup.InGame
             
             var mission01 = Resources.Load<MissionData>("Configs/Missions/Mission 01");
             missionsController.StartMission(mission01);
-            
-            return UniTask.CompletedTask;
         }
     }
 }

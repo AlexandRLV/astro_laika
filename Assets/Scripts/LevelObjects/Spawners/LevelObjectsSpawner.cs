@@ -21,7 +21,7 @@ namespace LevelObjects
         private List<LevelDestroyableObject> _spawnedObjects;
         private Queue<LevelDestroyableObject> _preparedObjects;
 
-        private void Awake()
+        public override void Initialize()
         {
             _spawnedObjects = new List<LevelDestroyableObject>();
             _preparedObjects = new Queue<LevelDestroyableObject>();
@@ -62,7 +62,8 @@ namespace LevelObjects
         {
             foreach (var spawnedObject in _spawnedObjects)
             {
-                Destroy(spawnedObject.gameObject);
+                if (spawnedObject.gameObject != null)
+                    Destroy(spawnedObject.gameObject);
             }
         }
 

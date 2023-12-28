@@ -152,8 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e631a521295c4ee89234f69dac06f996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnFirstObject: 0
-  _firstObjectYOffset: 0
   _maxActiveObjects: 5
   _minMaxTimeToSpawn: {x: 1, y: 3}
   _maxXOffset: 2
@@ -270,8 +268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e631a521295c4ee89234f69dac06f996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnFirstObject: 0
-  _firstObjectYOffset: 0
   _maxActiveObjects: 5
   _minMaxTimeToSpawn: {x: 1, y: 3}
   _maxXOffset: 2
@@ -355,6 +351,96 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7574737032685302692, guid: c4e9bcb31a2bfe3419e0eb064fae5cb4, type: 3}
   m_PrefabInstance: {fileID: 486725878}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &567737222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 567737227}
+  - component: {fileID: 567737226}
+  - component: {fileID: 567737225}
+  - component: {fileID: 567737224}
+  - component: {fileID: 567737223}
+  m_Layer: 0
+  m_Name: LevelInitializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &567737223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567737222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0b3ca10df3a42dc91fc873e9b4779ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerSpawn: {fileID: 1857987794}
+--- !u!114 &567737224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567737222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c14bd4e1d9dc40fc8be5683dd6c9f58d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelObjectsStorage: {fileID: 11400000, guid: 577fb96ad610e8a4ab13586efaa4c9e6, type: 2}
+  _objectsSpawnerService: {fileID: 173361555}
+--- !u!114 &567737225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567737222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a0357f2f7344c0a8250549557c85ab6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &567737226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567737222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5559bd6d29c042a992f7599dbcf86134, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initializers:
+  - {fileID: 567737225}
+  - {fileID: 567737223}
+  - {fileID: 567737224}
+--- !u!4 &567737227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567737222}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &655051085
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,8 +470,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e631a521295c4ee89234f69dac06f996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnFirstObject: 0
-  _firstObjectYOffset: 0
   _maxActiveObjects: 5
   _minMaxTimeToSpawn: {x: 1, y: 3}
   _maxXOffset: 2
@@ -436,8 +520,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e631a521295c4ee89234f69dac06f996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnFirstObject: 0
-  _firstObjectYOffset: 0
   _maxActiveObjects: 5
   _minMaxTimeToSpawn: {x: 1, y: 3}
   _maxXOffset: 2
@@ -488,8 +570,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e631a521295c4ee89234f69dac06f996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnFirstObject: 0
-  _firstObjectYOffset: 0
   _maxActiveObjects: 5
   _minMaxTimeToSpawn: {x: 1, y: 3}
   _maxXOffset: 2
@@ -5352,8 +5432,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e631a521295c4ee89234f69dac06f996, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnFirstObject: 0
-  _firstObjectYOffset: 0
   _maxActiveObjects: 5
   _minMaxTimeToSpawn: {x: 1, y: 3}
   _maxXOffset: 2
@@ -5384,7 +5462,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1857987794}
-  - component: {fileID: 1857987793}
   m_Layer: 0
   m_Name: PlayerSpawn
   m_TagString: Untagged
@@ -5392,18 +5469,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1857987793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1857987792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5664a55a294c4405a3a5c6a1f746d781, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1857987794
 Transform:
   m_ObjectHideFlags: 0
