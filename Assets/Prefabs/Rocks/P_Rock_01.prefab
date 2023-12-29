@@ -192,6 +192,7 @@ MonoBehaviour:
   _initialHealth: 5
   _useShield: 0
   _initialShield: 0
+  _destroyVfx: {fileID: 1280240331523082, guid: d89fa1b4c59b2eb4488e4780a537c558, type: 3}
 --- !u!114 &2148477382775012144
 MonoBehaviour:
   m_ObjectHideFlags: 0

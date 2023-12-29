@@ -53,7 +53,7 @@ namespace Player
             if (levelObject == null)
                 return;
             
-            _playerDamageable.Damage(levelObject.Data.CollisionToPlayerDamagePercent * _playerDamageable.InitialiHp, DamageType.Collision);
+            _playerDamageable.Damage(levelObject.Data.CollisionToPlayerDamagePercent * _playerDamageable.InitialHp, DamageType.Collision);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Damage
     public class Damageable : MonoBehaviour
     {
         public event Action<DamageType> OnDestroyed;
-        public float InitialiHp => _initialHealth;
+        public float InitialHp => _initialHealth;
     
         [Header("Health")]
         [SerializeField] private float _initialHealth;
@@ -14,6 +14,9 @@ namespace Damage
         [Header("Shield")]
         [SerializeField] private bool _useShield;
         [SerializeField] private float _initialShield;
+
+        [Header("VFX")]
+        [SerializeField] private GameObject _destroyVfx;
     
         private HealthStatus _healthStatus;
 
@@ -74,6 +77,7 @@ namespace Damage
 
         public void Destruct(DamageType damageType)
         {
+            Instantiate(_destroyVfx, transform.position, transform.rotation);
             OnDestroyed?.Invoke(damageType);
             Destroy(gameObject);
         }
