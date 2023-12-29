@@ -31,9 +31,11 @@ namespace Missions
         
         public void Initialize()
         {
-            Debug.Log($"Initializing mission stage {SpawnObjectsType} with {ObjectsCount} objects");
+            Debug.Log($"Initializing mission stage {SpawnObjectsType} with {ObjectsCount.ToString()} objects");
             
             _destroyedCount = 0;
+            _isCompleted = false;
+            
             GameContainer.InjectToInstance(this);
             _messageBroker.Subscribe<LevelObjectDestroyedMessage>(OnLevelObjectDestroyed);
 
@@ -69,7 +71,7 @@ namespace Missions
 
         public void Dispose()
         {
-            Debug.Log($"Disposing mission stage {SpawnObjectsType} with {ObjectsCount} objects");
+            Debug.Log($"Disposing mission stage {SpawnObjectsType} with {ObjectsCount.ToString()} objects");
             _messageBroker.Unsubscribe<LevelObjectDestroyedMessage>(OnLevelObjectDestroyed);
             _spawner.StopSpawn();
             _monoUpdater.OnUpdate -= OnUpdate;

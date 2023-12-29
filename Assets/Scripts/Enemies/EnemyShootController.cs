@@ -1,50 +1,49 @@
 using LevelObjects;
 using UnityEngine;
 
-public class EnemyShootController : MonoBehaviour
+namespace Enemies
 {
-    [SerializeField] private float _reloadTime;
-    [SerializeField] private Transform _firePoint;
-    [SerializeField] private EnemyShell _shellPrefab;
+    public class EnemyShootController : MonoBehaviour
+    {
+        [SerializeField] private float _reloadTime;
+        [SerializeField] private Transform _firePoint;
+        [SerializeField] private EnemyShell _shellPrefab;
 
-    private LevelObjectData _enemyData;
+        private LevelObjectData _enemyData;
     
-    private bool _canShoot = false;
-    private float _reloadTimer;
+        private bool _canShoot;
+        private float _reloadTimer;
 
-    public void Initialize(LevelObjectData data)
-    {
-        _enemyData = data;
-    }
-
-    private void Start()
-    {
-        _reloadTimer = _reloadTime;
-    }
-
-    private void Update()
-    {
-        if (!_canShoot) UpdateReloadTimer();
-        else
+        public void Initialize(LevelObjectData data)
         {
-            EnemyShell shell = Instantiate(_shellPrefab, _firePoint.position, _firePoint.rotation);
+            _enemyData = data;
+        }
 
-            _canShoot = false;
+        private void Start()
+        {
             _reloadTimer = _reloadTime;
-
         }
 
-
-    }
-
-    private void UpdateReloadTimer()
-    {
-        _reloadTimer -= Time.deltaTime;
-        if (_reloadTimer <= 0)
+        private void Update()
         {
-            _canShoot = true;
-            return;
+            if (!_canShoot)
+            {
+                UpdateReloadTimer();
+            }
+            else
+            {
+                var shell = Instantiate(_shellPrefab, _firePoint.position, _firePoint.rotation);
+                shell.DamagePercent = _enemyData.ShootDamagePercent;
+
+                _canShoot = false;
+                _reloadTimer = _reloadTime;
+            }
+        }
+
+        private void UpdateReloadTimer()
+        {
+            _reloadTimer -= Time.deltaTime;
+            if (_reloadTimer <= 0) _canShoot = true;
         }
     }
-
 }

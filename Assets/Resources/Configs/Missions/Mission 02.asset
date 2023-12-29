@@ -17,7 +17,7 @@ MonoBehaviour:
   - SpawnObjectsType: 6
     ObjectsCount: 15
   - SpawnObjectsType: 1
-    ObjectsCount: 20
+    ObjectsCount: 10
   - SpawnObjectsType: 0
     ObjectsCount: 1
   - SpawnObjectsType: 4

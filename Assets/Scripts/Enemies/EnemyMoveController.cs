@@ -1,3 +1,4 @@
+using Enemies;
 using LevelObjects;
 using UnityEngine;
 
@@ -15,15 +16,11 @@ public class EnemyMoveController : MonoBehaviour
     [Header("Move zone")]
     [SerializeField] private Vector3 _moveZoneCenter;
     [SerializeField] private Vector3 _moveZoneSize;
-
-    [Header("Components")]
-    [SerializeField] private EnemyShootController _shootController;
     
-    public void Init(Vector3 moveZoneCenter, Vector3 moveZoneSize, LevelObjectData enemyData)
+    public void Init(Vector3 moveZoneCenter, Vector3 moveZoneSize)
     {
         _moveZoneCenter = moveZoneCenter;
         _moveZoneSize = moveZoneSize;
-        _shootController.Initialize(enemyData);
 
         movePoint = EnemyExtentions.CalculateNewMovePoint(_moveZoneCenter, _moveZoneSize);
     }

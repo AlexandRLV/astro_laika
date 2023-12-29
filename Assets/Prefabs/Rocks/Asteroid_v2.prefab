@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 606842706734620301}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 4}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6433855057223798959}
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageable: {fileID: 276425714953662396}
   _healthStatus: {fileID: 9090309146938736093}
+  _shootController: {fileID: 0}
 --- !u!114 &276425714953662396
 MonoBehaviour:
   m_ObjectHideFlags: 0

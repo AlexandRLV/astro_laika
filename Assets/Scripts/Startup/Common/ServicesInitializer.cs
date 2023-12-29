@@ -1,4 +1,5 @@
 ﻿using DI;
+using Environment;
 using GameSettings;
 using PlayerProgress;
 using PlayerShips;
@@ -10,7 +11,9 @@ namespace Startup.Common
 {
     public class ServicesInitializer : InitializerBase
     {
+        [SerializeField] private SoundsSystem _soundsSystemPrefab;
         [SerializeField] private PlayerShipsData _playerShipsData;
+        [SerializeField] private MenuBackground _menuBackground;
         
         public override void Initialize()
         {
@@ -20,8 +23,7 @@ namespace Startup.Common
             var gameSettings = new GameSettingsManager();
             GameContainer.Common.Register(gameSettings);
 
-            var soundsSystemPrefab = Resources.Load<SoundsSystem>("Services/SoundsSystem");
-            var soundsSystem = GameContainer.InstantiateAndResolve(soundsSystemPrefab);
+            var soundsSystem = GameContainer.InstantiateAndResolve(_soundsSystemPrefab);
             GameContainer.Common.Register(soundsSystem);
 
             var monoUpdaterGO = new GameObject("Mono Updater");
@@ -40,6 +42,9 @@ namespace Startup.Common
 
             gameInfoContainer.CurrentShip = _playerShipsData.PlayerShips[progressManager.Data.SelectedShip];
             GameContainer.Common.Register(_playerShipsData);
+            
+            GameContainer.Common.Register(_menuBackground);
+            _menuBackground.Active = true;
         }
     }
 }

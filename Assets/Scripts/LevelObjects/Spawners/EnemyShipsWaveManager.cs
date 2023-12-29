@@ -91,7 +91,7 @@ public class EnemyShipsWaveManager : ObjectsSpawnerBase
     {
         int i = Mathf.RoundToInt(Random.Range(0, _spawnPoints.Length));
         var newEnemy = Instantiate(enemy, _spawnPoints[i].position, enemy.transform.rotation);
-        newEnemy.Init(EnemyMoveZoneCenter, EnemyMoveZoneSize, _enemyData);
+        newEnemy.Init(EnemyMoveZoneCenter, EnemyMoveZoneSize);
         _spawnedEnemies.Add(newEnemy);
         _enemiesAlive++;
         

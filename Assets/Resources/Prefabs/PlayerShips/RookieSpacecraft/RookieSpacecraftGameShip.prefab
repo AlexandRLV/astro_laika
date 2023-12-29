@@ -67,6 +67,7 @@ MonoBehaviour:
   _initialHealth: 100
   _useShield: 0
   _initialShield: 100
+  _destroyVfx: {fileID: 1280240331523082, guid: 031faf5ef0ec4c34c86671fa3e2e81d1, type: 3}
 --- !u!50 &9170345665582650723
 Rigidbody2D:
   serializedVersion: 4

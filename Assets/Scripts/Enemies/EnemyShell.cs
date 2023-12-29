@@ -1,22 +1,33 @@
+using System;
 using Damage;
+using Player;
 using UnityEngine;
 
-public class EnemyShell : MonoBehaviour
+namespace Enemies
 {
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _damage;
-
-    private void Update()
+    public class EnemyShell : MonoBehaviour
     {
-        transform.Translate(-transform.up * (_moveSpeed * Time.deltaTime));   
-    }
+        [HideInInspector] public float DamagePercent;
+        
+        [SerializeField] private float _moveSpeed;
+        [SerializeField] private GameObject _impactEffect;
+        
+        private void Update()
+        {
+            transform.Translate(-Vector3.up * (_moveSpeed * Time.deltaTime));   
+        }
 
-    private void OnTriggerEnter(Collider collision)
-    {
-        var damageable = collision.gameObject.GetComponentInParent<Damageable>();
-        if (damageable != null)
-            damageable.Damage(_damage, DamageType.Collision);
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            var player = other.attachedRigidbody.GetComponent<PlayerController>();
+            if (player == null) return;
+            
+            var damageable = other.gameObject.GetComponentInParent<Damageable>();
+            if (damageable != null)
+                damageable.Damage(DamagePercent * damageable.InitialHp, DamageType.Collision);
 
-        Destroy(gameObject);
+            Instantiate(_impactEffect, other.ClosestPoint(transform.position), transform.rotation);
+            Destroy(gameObject);
+        }
     }
 }

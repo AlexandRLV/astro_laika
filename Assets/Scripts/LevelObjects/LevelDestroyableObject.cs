@@ -1,6 +1,7 @@
 ﻿using System;
 using Damage;
 using DI;
+using Enemies;
 using LevelObjects.Messages;
 using Player;
 using Services;
@@ -15,6 +16,7 @@ namespace LevelObjects
         
         [SerializeField] private Damageable _damageable;
         [SerializeField] private HealthStatus _healthStatus;
+        [SerializeField] private EnemyShootController _shootController;
 
         [Inject] private MessageBroker _messageBroker;
         
@@ -27,6 +29,8 @@ namespace LevelObjects
         public void InitializeWithData(LevelObjectData data)
         {
             Data = data;
+            if (_shootController != null)
+                _shootController.Initialize(data);
         }
 
         private void OnDestroyed(DamageType damageType)

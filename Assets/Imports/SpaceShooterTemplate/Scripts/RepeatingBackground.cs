@@ -22,8 +22,8 @@ namespace Imports.SpaceShooterTemplate.Scripts
 
         void RepositionBackground() 
         {
-            Vector2 groundOffSet = new Vector2(0, verticalSize * 2f);
-            transform.position = (Vector2)transform.position + groundOffSet;
+            var groundOffSet = new Vector3(0, verticalSize * 2f, 0f);
+            transform.position += groundOffSet;
         }
     }
 }

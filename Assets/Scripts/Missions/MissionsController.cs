@@ -13,6 +13,7 @@ namespace Missions
         [Inject] private WindowsSystem _windowsSystem;
         [Inject] private GameInfoContainer _gameInfoContainer;
         [Inject] private PlayerProgressManager _progressManager;
+        [Inject] private LevelScoresCounter _scoresCounter;
         
         private MissionData _data;
         private MissionStage _currentStage;
@@ -38,11 +39,13 @@ namespace Missions
             }
             if (_currentStage == null)
             {
+                stage.Dispose();
                 Debug.LogError("Trying to complete stage, but current not started");
                 return;
             }
             if (stage != _currentStage)
             {
+                stage.Dispose();
                 Debug.LogError("Trying to complete not current stage");
                 return;
             }
@@ -78,6 +81,7 @@ namespace Missions
                 _progressManager.SaveProgress();
             }
             
+            _scoresCounter.AddScores(_data.RewardScoresForFullMission);
             _windowsSystem.CreateWindow<MissionCompletedWindow>();
         }
     }
